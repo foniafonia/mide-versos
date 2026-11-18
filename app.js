@@ -420,7 +420,8 @@ function corrige(ok, x, it, extra) {
   var card = tarjetaVerso(it, 0, !ok);
   EST.items = guarda;
   $('pRes').innerHTML += '<p class="' + (ok ? 'bien' : 'mal') + '">' + (ok ? '¡Muy bien! ' : 'Tiene ' + tot + ' sílabas. ' + esc(extra) + ' ') + (ok ? tot + ' sílabas: ' + esc(M.nombre(tot)) + '. ' + esc(extra) : 'Mira por qué:') + '</p>' +
-    '<div style="text-align:left" id="pCard">' + card.replace('id="vs0"', '') + '</div><p><button class="btn" type="button" id="pSig">' + (P.i + 1 < P.lista.length ? 'Siguiente →' : 'Ver resultado') + '</button></p>';
+    '<p><button class="btn" type="button" id="pSig">' + (P.i + 1 < P.lista.length ? 'Siguiente →' : 'Ver resultado') + '</button></p>' +
+    '<div style="text-align:left" id="pCard">' + card.replace('id="vs0"', '').replace(/data-k="/g, 'data-nok="') + '</div>';
 }
 $('pJuego').addEventListener('click', function (e) {
   var acc = e.target.closest('#pCard [data-acc]'); if (!acc) return;
