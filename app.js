@@ -197,7 +197,7 @@ var NOMBRE_TIPO = { aguda: 'aguda', llana: 'llana', 'esdrújula': 'esdrújula', 
 var EJEMPLOS = [
   ['Verde que te quiero verde', 'Verde que te quiero verde'],
   ['Era un niño que soñaba', 'Era un niño que soñaba'],
-  ['Bécquer (poema)', 'golondrinas'], ['Machado (poema)', 'caminante'], ['Soneto de Lope', 'violante'], ['Alejandrinos de Darío', 'sonatina']
+  ['un caballo de cartón', 'un caballo de cartón']
 ];
 $('ejemplos').innerHTML = '<span class="glos">Prueba:</span> ' + EJEMPLOS.map(function (e, i) { return '<button type="button" data-e="' + i + '">' + esc(e[0]) + '</button>'; }).join('');
 $('ejemplos').addEventListener('click', function (ev) {
