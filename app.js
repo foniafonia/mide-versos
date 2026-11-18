@@ -421,7 +421,7 @@ function ejercicio() {
   var x = P.lista[P.i], it = itemDe(x), r = x.r, fin = it.hemis ? it.hemis[1].r : r;
   P.taps = 0; P.intento = 0; P.fase = (x.obj ? 'lic' : ($('pTipo').checked ? 'tipo' : 'num'));
   var h = '<div class="marcador"><span>Verso ' + (P.i + 1) + ' de ' + P.lista.length + '</span><span class="abejas">' + (P.bien ? new Array(P.bien + 1).join('🐝') : '') + '</span></div>' +
-    '<div class="versoG">' + esc(x.v) + '</div><div id="pPreg"></div><div id="pRes"></div>';
+    '<div class="versoG">' + esc(x.v) + '</div><div id="pRes"></div><div id="pPreg"></div>';
   $('pJuego').innerHTML = h;
   pregunta(x, it, fin);
 }
