@@ -381,13 +381,13 @@ function poema(texto, op) {
     hubo = true; versos.push({ texto: ln.trim(), estrofa: estrofa });
   });
   if (!versos.length) return null;
-  versos.forEach(function (v) { v.r = analiza(v.texto, { sinalefa: op.sinalefa }); });
+  versos.forEach(function (v) { v.r = analiza(v.texto, { sinalefa: op.sinalefa, objetivo: op.objetivo }); });
   // Metros principales del poema
   var frec = {};
   versos.forEach(function (v) { frec[v.r.total] = (frec[v.r.total] || 0) + 1; });
   var principales = Object.keys(frec).map(Number).filter(function (n) { return frec[n] >= 2 && frec[n] >= versos.length * 0.2; });
   if (op.objetivo) principales = [op.objetivo];
-  if (versos.length >= 3 && principales.length && op.ajustar !== false) {
+  if (versos.length >= 3 && principales.length && op.ajustar !== false && !op.objetivo) {
     versos.forEach(function (v) {
       if (principales.indexOf(v.r.total) >= 0) return;
       var cerca = principales.slice().sort(function (a, b) { return Math.abs(a - v.r.total) - Math.abs(b - v.r.total); });

@@ -110,6 +110,10 @@ var ALE = 'La princesa está triste... ¿qué tendrá la princesa?\nLos suspiros
 p = M.poema(ALE);
 ok(p.versos.every(function (v) { return v.r.total === 14; }), 'Darío: alejandrinos ' + p.versos.map(function (v) { return v.r.total; }));
 
+p = M.poema('Escrito está en mi alma vuestro gesto', { objetivo: 11 });
+ok(p.versos[0].r.total === 11, 'poema de un verso con metro 11: ' + p.versos[0].r.total);
+p = M.poema('La princesa está pálida en su silla de oro', { objetivo: 14 });
+ok(p.versos[0].r.total === 14, 'poema de un verso con metro 14: ' + p.versos[0].r.total);
 /* 6. Sin sinalefa (interruptor) */
 ok(M.analiza('Era un niño que soñaba', { sinalefa: false }).total === 9, 'sin sinalefa: «Era un niño…» debe dar 9');
 
