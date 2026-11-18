@@ -162,6 +162,50 @@ body.proyecta .envol{max-width:1500px}
  #pJuego{padding-bottom:70px}
 }
 
+/* ===== candado (término medio) ===== */
+body:not(.libre) .solo-libre{display:none!important}
+body.libre nav.pest [data-v=practicar]::after,body.libre #bProy .tx::after,body.libre [data-adapta]::after,body.libre [data-imp]::after,body.libre [data-pra]::after,body.libre [data-med]::after{content:" 🔒";font-size:.85em}
+/* ===== tutorial ===== */
+.tut{max-width:860px;margin:18px auto 30px}
+.tprog{display:flex;gap:6px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+.tprog button{width:38px;height:38px;border-radius:50%;border:2px solid var(--linea);background:#fff;font-weight:900;cursor:pointer}
+.tprog button.hecha{background:var(--verde);border-color:var(--verde);color:#fff}.tprog button.act{border-color:var(--oro);box-shadow:0 0 0 3px var(--oro)}
+.tut .caja h2{margin:2px 0 6px;font-size:26px;color:var(--noche)}.tut .etq2{font-weight:800;color:var(--suave);font-size:15px}
+.tut .ttxt{font-size:20px;line-height:1.5;margin:6px 0 10px}
+.escena{min-height:230px;background:var(--crema);border:2px dashed var(--linea);border-radius:18px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;overflow:hidden;text-align:center}
+.tw{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:flex-end}
+.tpal{font:700 42px/1.2 "Lora",Georgia,serif;letter-spacing:1px;transition:opacity .4s,transform .4s}
+.tpal.fuera{opacity:0;transform:scale(.8)}
+.tpal span{display:inline-block;transition:transform .5s,color .3s,background .3s;border-radius:8px;padding:0 2px}
+.tpal span.voc{color:var(--b4)}.tpal span.abr{background:var(--s3);color:var(--b3);transform:translateY(-6px)}.tpal span.sep{color:var(--rojo)}
+.tch{opacity:0;transform:translateY(18px) scale(.8);transition:opacity .35s,transform .35s,box-shadow .2s}
+.tch.on{opacity:1;transform:none}.tch.ya{transform:scale(1.18);box-shadow:0 0 0 4px var(--oro)}
+.tch.izq{transform:translateX(14px)}.tch.der{transform:translateX(-14px)}.tch.par{box-shadow:0 0 0 4px var(--rojo)}
+.tcont{font:900 60px/1 "Nunito",sans-serif;color:var(--noche);min-height:60px}
+.tcap{font-weight:800;color:var(--verde2);min-height:1.5em;font-size:19px}
+.tmano{font-size:44px;transition:transform .15s}.tmano.pum{transform:scale(1.35) rotate(-10deg)}
+.tfz{display:flex;gap:6px;align-items:flex-end;justify-content:center}
+.tfz span{display:flex;align-items:flex-end;justify-content:center;min-width:52px;height:44px;padding:4px 8px;border-radius:10px;background:#E8EFEA;font:700 22px "Lora",serif;color:var(--suave);transition:height .5s,background .4s,color .4s}
+.tfz span.f{height:84px;background:var(--rojo);color:#fff;font-size:26px}
+.tfila{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;width:100%;max-width:560px}
+.tfila b{text-align:right;color:var(--noche)}
+.tescala{width:100%;max-width:620px;display:flex;flex-direction:column;gap:3px}
+.tescala div{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800}
+.tescala i{display:block;height:16px;border-radius:6px;background:var(--verde);width:0;transition:width .5s}
+.tescala div.mayor i{background:var(--b5)}.tescala hr{width:100%;border:0;border-top:3px dashed var(--oro);margin:4px 0}
+.treto{margin-top:12px;background:#fff;border:2px solid var(--linea);border-radius:16px;padding:12px;text-align:center}
+.treto .tipos button{min-height:56px}
+.thueco{border:2px dashed var(--linea);background:#fff;border-radius:10px;min-width:34px;min-height:40px;cursor:pointer;font-weight:900;color:var(--rojo);font-size:20px;margin:0 2px}
+.thueco[aria-pressed=true]{background:var(--s1);border-color:var(--rojo)}
+.tverso{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;font:500 26px/1.6 "Lora",serif}
+.tnav{display:flex;justify-content:space-between;gap:8px;margin-top:12px;flex-wrap:wrap}
+.tut .bien,.tut .mal{font-size:20px}
+.mayus .tpal,.mayus .tverso,.mayus .tfz span{text-transform:uppercase}
+.facil .tpal,.facil .tverso,.facil .tfz span,.facil .ttxt{font-family:"Atkinson Hyperlegible",Verdana,sans-serif!important;letter-spacing:.04em}
+.contraste .escena,.contraste .treto,.contraste .thueco,.contraste .tprog button{background:#000;color:#fff;border-color:#fff}
+.contraste .tut .caja h2,.contraste .tcont,.contraste .tcap{color:#FFE600}
+.t2 .tpal,.t2 .tverso{font-size:50px}.t2 .ttxt{font-size:24px}.t3 .tpal,.t3 .tverso{font-size:58px}.t3 .ttxt{font-size:28px}
+@media (max-width:760px){.tpal{font-size:34px}.tverso{font-size:22px}.tfila{grid-template-columns:80px 1fr}.tcont{font-size:48px}}
 /* ===== puerta ===== */
 body.cerrada main,body.cerrada .pie,body.cerrada #abeja,body.cerrada nav.pest,body.cerrada .herr{display:none!important}
 .lista{padding-left:4px;list-style:none;margin:8px 0}.lista li{margin:6px 0}
@@ -223,43 +267,13 @@ body.contraste{background:#000;color:#fff}
   <a class="marca" href="./" aria-label="Mide versos, inicio"><img src="img/colmenia-logo.webp" alt=""><span><b>Mide versos</b><small>Métrica paso a paso · ColmenIA</small></span></a>
   <nav class="pest" aria-label="Secciones">
     <button type="button" data-v="medir" aria-pressed="true">✏️ Medir</button>
+    <button type="button" data-v="aprende" aria-pressed="false">🎓 Aprende</button>
     <button type="button" data-v="practicar" aria-pressed="false">🎯 Practicar</button>
     <button type="button" data-v="banco" aria-pressed="false">📚 Versos</button>
     <button type="button" data-v="guia" aria-pressed="false">💡 Cómo se mide</button>
   </nav>
   <div class="herr"><button type="button" data-adapta title="Adaptar a cada alumno: letra, colores, voz, modo guiado">♿ <span class="tx">Adaptar</span></button><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
 </div></header>
-
-<!-- ============ PUERTA: solo para quien está en ColmenIA ============ -->
-<section id="puerta" class="envol oculto">
-  <div class="hero">
-    <div class="caja">
-      <h1>Mide versos</h1>
-      <p>La herramienta para enseñar a medir versos que pidieron unas maestras de PT. Es para quienes están en <b>ColmenIA</b>.</p>
-      <ul class="lista">
-        <li>📏 Mide cualquier verso o poema paso a paso: sílabas, sinalefa, acento final, nombre del verso y rima.</li>
-        <li>👏 Palmadas con sonido y sílabas de colores.</li>
-        <li>🎯 Práctica en la que el alumno cuenta y la app corrige y explica.</li>
-        <li>♿ Se adapta: letra grande o fácil, mayúsculas, contraste, un paso cada vez, voz.</li>
-        <li>📚 30 poemas de clásicos y de Primaria, y fichas para imprimir.</li>
-      </ul>
-      <p><b>Mira cómo funciona:</b></p>
-      <div id="demo"></div>
-    </div>
-    <aside class="puente">
-      <div class="logos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
-      <b>Entra en ColmenIA para usarla</b>
-      <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA para su día a día.</p>
-      <p>Dentro está el post de Mide versos con la clave para abrirla, y puedes pedir la siguiente herramienta que necesites en tu aula.</p>
-      <a class="btn oro" data-sk="puerta" target="_blank" rel="noopener">Entrar en ColmenIA</a>
-      <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.25);padding-top:10px">
-        <label for="clave"><b>¿Ya estás dentro?</b> Escribe la clave del post:</label>
-        <div class="fila" style="margin-top:6px"><input id="clave" autocomplete="off" autocapitalize="characters" style="flex:1;min-width:140px;border:0;border-radius:12px;padding:12px;font-size:18px" placeholder="Clave de la colmena"><button class="btn" id="bClave" type="button">Abrir</button></div>
-        <p id="claveMsg" role="status" style="min-height:1.4em"></p>
-      </div>
-    </aside>
-  </div>
-</section>
 
 <main>
 <!-- ============ MEDIR ============ -->
@@ -268,6 +282,8 @@ body.contraste{background:#000;color:#fff}
     <div class="caja">
       <h1>Cuenta las sílabas de un verso, paso a paso</h1>
       <p>Escribe o pega un verso o un poema. Verás las sílabas con colores, las sinalefas, la sílaba fuerte, la regla del final, el nombre del verso y la rima. Para la clase, la pizarra digital y el móvil.</p>
+      <p class="solo-libre aviso" style="margin:8px 0">🔓 Medir un verso es abierto para todos. Los poemas enteros con su rima, la práctica, las fichas, las adaptaciones y la pizarra están en ColmenIA, con su clave. <button type="button" class="btn oro peq" data-candado="portada">Tengo la clave</button></p>
+      <p><button type="button" class="btn sec peq" data-ir="aprende">🎓 Aprende a medir: tutorial para el alumnado</button></p>
       <p><b>Se adapta a cada alumno:</b> letra grande o fácil de leer, mayúsculas, alto contraste, un paso cada vez y conteo en voz alta. <button type="button" class="btn sec peq" data-adapta>♿ Adaptar</button></p>
       <label for="texto" class="oculto">Verso o poema</label>
       <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas</textarea>
@@ -289,6 +305,9 @@ body.contraste{background:#000;color:#fff}
   </div>
   <div id="resultado" aria-live="polite"></div>
 </section>
+
+<!-- ============ APRENDE (tutorial) ============ -->
+<section id="v-aprende" class="envol oculto"><div class="tut" id="tut"></div></section>
 
 <!-- ============ PRACTICAR ============ -->
 <section id="v-practicar" class="envol oculto">
@@ -342,6 +361,20 @@ body.contraste{background:#000;color:#fff}
 </div></div>
 <button id="abeja" type="button" aria-label="Pedir mejoras">🐝 Mejoras</button>
 
+<!-- ============ CANDADO: lo de clase, para quien está en ColmenIA ============ -->
+<div class="modal oculto" id="mCandado" role="dialog" aria-modal="true" aria-labelledby="tCandado"><div class="caja">
+  <div class="fila" style="gap:8px"><img src="img/colmenia-logo.webp" alt="ColmenIA" style="height:44px;border-radius:8px"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia" style="height:44px;border-radius:8px"></div>
+  <h2 id="tCandado" style="margin:10px 0 6px">🔑 <span id="candTit">Esto está en ColmenIA</span></h2>
+  <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA. Dentro, en el post de Mide versos, tienes la clave para abrirlo todo, y puedes pedir la siguiente herramienta que necesites.</p>
+  <p><a class="btn oro" data-sk="candado" target="_blank" rel="noopener">Entrar en ColmenIA</a></p>
+  <div style="border-top:1px solid var(--linea);padding-top:10px">
+    <label for="clave"><b>¿Ya estás dentro?</b> Escribe la clave del post:</label>
+    <div class="fila" style="margin-top:6px"><input id="clave" autocomplete="off" autocapitalize="characters" style="flex:1;min-width:140px;border:2px solid var(--linea);border-radius:12px;padding:12px;font-size:18px" placeholder="Clave de la colmena"><button class="btn" id="bClave" type="button">Abrir</button></div>
+    <p id="claveMsg" role="status" style="min-height:1.4em"></p>
+  </div>
+  <p><button class="btn sec" id="candCierra" type="button">Seguir con lo abierto</button></p>
+</div></div>
+
 <!-- ============ ADAPTAR ============ -->
 <div class="modal oculto" id="mAdapta" role="dialog" aria-modal="true" aria-labelledby="tAdapta"><div class="caja">
   <h2 id="tAdapta" style="margin-top:0">♿ Adaptar a cada alumno</h2>
@@ -381,8 +414,9 @@ body.contraste{background:#000;color:#fff}
 <div id="contador" class="oculto" aria-hidden="true"></div>
 <div id="ficha"></div>
 
-<script src="metrica.js?v=9"></script>
-<script src="banco.js?v=9"></script>
-<script src="app.js?v=9"></script>
+<script src="metrica.js?v=10"></script>
+<script src="banco.js?v=10"></script>
+<script src="app.js?v=10"></script>
+<script src="tutorial.js?v=10"></script>
 </body>
 </html>

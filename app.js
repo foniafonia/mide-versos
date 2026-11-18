@@ -30,6 +30,37 @@ if (!ls('mv-visto')) { ls('mv-visto', '1'); cuenta('personas'); }
 var _usados = {};
 function cuentaUnaVez(k) { if (_usados[k]) return; _usados[k] = 1; cuenta(k); }
 
+/* ===================== Clave de ColmenIA (término medio) =====================
+   Abierto: medir un verso, el tutorial y la guía. Con clave: poemas enteros, práctica, fichas,
+   adaptaciones y pizarra. La clave va en el post de Mide versos en Skool; aquí solo su huella.
+   Para cambiarla: añade la huella nueva a CLAVES (fnv(normaliza('nueva'))). */
+var CLAVES = [1532103824];
+function normaliza(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''); }
+function fnv(t) { var x = 2166136261; for (var i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x; }
+function claveBuena(t) { return CLAVES.indexOf(fnv(normaliza(t))) >= 0; }
+var dentro = !!ls('mv-llave') || NO_CONTAR;
+if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
+var MOTIVOS = { poema: 'Medir poemas enteros, con su rima y su estrofa', ficha: 'Las fichas para imprimir', practica: 'La práctica: el alumno cuenta y la app corrige', banco: 'Los 30 poemas listos para medir y practicar', adaptar: 'Las adaptaciones para alumnado con NEE', pizarra: 'El modo pizarra digital', portada: 'Todo Mide versos', tutorial: 'La práctica con la app' };
+function candado(motivo) {
+  if (dentro) return false;
+  $('candTit').textContent = (MOTIVOS[motivo] || 'Esto') + ' está en ColmenIA';
+  $('claveMsg').textContent = ''; $('mCandado').classList.remove('oculto'); setTimeout(function () { $('clave').focus(); }, 50);
+  cuenta('candado_' + motivo);
+  return true;
+}
+function pruebaClave() {
+  if (claveBuena($('clave').value)) {
+    ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_clave');
+    $('claveMsg').textContent = '¡Dentro! Ya tienes todo abierto.';
+    setTimeout(function () { $('mCandado').classList.add('oculto'); document.body.classList.remove('libre'); if (!$('v-medir').classList.contains('oculto')) medir(true); toast('Mide versos abierto entero 🐝'); }, 600);
+  } else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en el post de Mide versos, dentro de ColmenIA.'; }
+}
+$('bClave').addEventListener('click', pruebaClave);
+$('clave').addEventListener('keydown', function (e) { if (e.key === 'Enter') pruebaClave(); });
+$('candCierra').addEventListener('click', function () { $('mCandado').classList.add('oculto'); });
+$('mCandado').addEventListener('click', function (e) { if (e.target === $('mCandado')) $('mCandado').classList.add('oculto'); });
+document.addEventListener('click', function (e) { var b = e.target.closest('[data-candado]'); if (b) candado(b.dataset.candado); var g = e.target.closest('[data-ir]'); if (g) vista(g.dataset.ir); });
+
 /* ===================== Puente a ColmenIA ===================== */
 var SK = 'https://www.skool.com/logopedia-7339/about';   // portada: nunca con ?c=
 function puentes(raiz) {
@@ -47,10 +78,11 @@ function bloquePuente(lugar, titulo) {
 
 /* ===================== Vistas ===================== */
 function vista(v) {
-  ['medir', 'practicar', 'banco', 'guia'].forEach(function (x) { $('v-' + x).classList.toggle('oculto', x !== v); });
+  ['medir', 'aprende', 'practicar', 'banco', 'guia'].forEach(function (x) { $('v-' + x).classList.toggle('oculto', x !== v); });
   document.querySelectorAll('nav.pest button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.v === v); });
   if (v !== 'medir') cuentaUnaVez('vista_' + v);
   paraPalmas();
+  if (window.TUT) { if (v === 'aprende') window.TUT.abre(); else window.TUT.para(); }
   window.scrollTo(0, 0);
 }
 document.querySelectorAll('nav.pest button').forEach(function (b) { b.addEventListener('click', function () { vista(b.dataset.v); }); });
@@ -80,7 +112,7 @@ function aplicaAjustes() {
 }
 function cambiaAjustes() { aplicaAjustes(); if (EST.items && EST.items.length && !$('v-medir').classList.contains('oculto')) pintaResultado(); }
 document.addEventListener('click', function (e) {
-  if (e.target.closest('[data-adapta]')) { $('mAdapta').classList.remove('oculto'); var f = $('mAdapta').querySelector('button'); if (f) f.focus(); cuenta('adapta_abre'); }
+  if (e.target.closest('[data-adapta]')) { if (candado('adaptar')) return; $('mAdapta').classList.remove('oculto'); var f = $('mAdapta').querySelector('button'); if (f) f.focus(); cuenta('adapta_abre'); }
 });
 $('perfiles').addEventListener('click', function (e) {
   var b = e.target.closest('[data-p]'); if (!b) return;
@@ -197,6 +229,10 @@ function totalItem(it) { return it.hemis ? it.hemis[0].r.total + it.hemis[1].r.t
 
 function pintaResultado(aviso) {
   var items = EST.items, h = aviso || '';
+  if (!dentro && items.length > 1) {
+    h += '<div class="aviso">📜 Has pegado un poema de ' + items.length + ' versos. Abajo tienes medido el primero. <b>Medir el poema entero, con su rima y su estrofa,</b> está en ColmenIA. <button class="btn oro peq" type="button" data-candado="poema">Abrir con la clave</button></div>';
+    EST.items = items = items.slice(0, 1); cuenta('candado_poema_ve');
+  }
   if (items.length > 1) h += resumenPoema();
   else h += '<div class="fila" style="margin-bottom:10px"><button class="btn sec peq" type="button" data-imp="sol">🖨 Ficha con solución</button><button class="btn sec peq" type="button" data-imp="alu">🖨 Ficha para el alumno</button><button class="btn sec peq" type="button" data-adapta>♿ Adaptar</button></div>';
   items.forEach(function (it, i) { h += tarjetaVerso(it, i, items.length === 1); });
@@ -329,7 +365,7 @@ function pasosSimple(r, i, hk) {
 
 /* clics dentro del resultado */
 $('resultado').addEventListener('click', function (e) {
-  var imp = e.target.closest('[data-imp]'); if (imp) { ficha(imp.dataset.imp, EST.items); return; }
+  var imp = e.target.closest('[data-imp]'); if (imp) { if (candado('ficha')) return; ficha(imp.dataset.imp, EST.items); return; }
   if (e.target.closest('#bPracPoema')) { empiezaPractica(EST.items.map(function (it) { return { v: it.texto }; }), 'poema'); return; }
   var tg = e.target.closest('.tog[data-k]');
   if (tg) {
@@ -406,6 +442,7 @@ $('pEmpieza').addEventListener('click', function () {
   empiezaPractica(baraja(pool).slice(0, AJ.ronda), 'nivel' + P.nivel);
 });
 function empiezaPractica(lista, origen) {
+  if (candado(origen === 'tutorial' ? 'tutorial' : 'practica')) return;
   vista('practicar'); audio();
   P.lista = lista.slice(0, AJ.ronda).map(function (x) {
     var r = M.analiza(x.v, x.obj ? { objetivo: x.obj } : {});
@@ -542,6 +579,7 @@ $('tarjetas').addEventListener('click', function (e) {
   var m = e.target.closest('[data-med]'), p = e.target.closest('[data-pra]');
   var id = (m || p || {}).dataset; if (!id) return;
   var b = window.BANCO.filter(function (x) { return x.id === (id.med || id.pra); })[0];
+  if (candado('banco')) return;
   cuenta('banco_' + b.id);
   if (m) { $('texto').value = b.t; $('oObj').value = ''; vista('medir'); medir(); setTimeout(function () { $('resultado').scrollIntoView({ behavior: 'smooth' }); }, 60); }
   else empiezaPractica(baraja(b.t.split('\n').filter(function (l) { return /[a-z]/i.test(l); }).map(function (l) { return { v: l.trim() }; })), 'banco');
@@ -571,6 +609,7 @@ $('guia').addEventListener('click', function (e) {
 /* ===================== Pizarra digital ===================== */
 $('bProy').addEventListener('click', function () {
   var on = !document.body.classList.contains('proyecta');
+  if (on && candado('pizarra')) return;
   document.body.classList.toggle('proyecta', on);
   if (on) { cuenta('pizarra'); try { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); } catch (e) {} }
   else if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
@@ -614,35 +653,14 @@ $('mejEnvia').addEventListener('click', function () {
 });
 
 /* ===================== Arranque ===================== */
+window.MV = { cuenta: cuenta, cuentaUnaVez: cuentaUnaVez, palmada: palmada, audio: audio, lee: lee, esc: esc, baraja: baraja, vista: vista, bloquePuente: bloquePuente, puentes: puentes, candado: candado, toast: toast,
+  medirVerso: function (v) { $('texto').value = v; $('oObj').value = ''; vista('medir'); medir(); setTimeout(function () { $('resultado').scrollIntoView({ behavior: 'smooth' }); }, 60); },
+  practicar: function (lista) { empiezaPractica(lista, 'tutorial'); }, ajustes: function () { return AJ; } };
+if (!dentro) document.body.classList.add('libre');
 aplicaAjustes();
 var inicio = Q.get('v');
 if (inicio && $('v-' + inicio)) vista(inicio);
 var vq = Q.get('verso'); if (vq) $('texto').value = vq.slice(0, 2000);
 medir(true);
-/* ===================== Puerta: solo para quien está en ColmenIA =====================
-   La clave va en el post de Mide versos dentro de Skool. Aquí solo guardamos su huella.
-   Para cambiarla: añade la huella nueva a CLAVES (fnv(normaliza('nueva'))). */
-var CLAVES = [1532103824];
-function normaliza(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''); }
-function fnv(t) { var x = 2166136261; for (var i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x; }
-function claveBuena(t) { return CLAVES.indexOf(fnv(normaliza(t))) >= 0; }
-function abre() { document.body.classList.remove('cerrada'); $('puerta').classList.add('oculto'); medir(true); }
-var dentro = !!ls('mv-llave') || NO_CONTAR;
-if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
-if (!dentro) {
-  document.body.classList.add('cerrada'); $('puerta').classList.remove('oculto'); cuenta('puerta_ve');
-  var guardaItems = EST.items;
-  var demo = M.analiza('Verde que te quiero verde');
-  EST.items = [{ texto: 'Verde que te quiero verde', r: demo, marca: '' }];
-  $('demo').innerHTML = tarjetaVerso(EST.items[0], 0, false).replace('id="vs0"', 'id="vsDemo"');
-  EST.items = guardaItems;
-  $('demo').addEventListener('click', function (e) { var a = e.target.closest('[data-acc="palmas"]'); if (a) { audio(); palmea(a.closest('.verso'), a); cuenta('demo_palmas'); } });
-  var prueba = function () {
-    if (claveBuena($('clave').value)) { ls('mv-llave', '1'); cuenta('desbloquea'); cuenta('desbloquea_clave'); $('claveMsg').textContent = '¡Dentro! Bienvenida, bienvenido.'; setTimeout(abre, 500); }
-    else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en el post de Mide versos, dentro de ColmenIA.'; }
-  };
-  $('bClave').addEventListener('click', prueba);
-  $('clave').addEventListener('keydown', function (e) { if (e.key === 'Enter') prueba(); });
-}
 puentes();
 })();
