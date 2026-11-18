@@ -38,8 +38,9 @@ var CLAVES = [1532103824];
 function normaliza(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''); }
 function fnv(t) { var x = 2166136261; for (var i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x; }
 function claveBuena(t) { return CLAVES.indexOf(fnv(normaliza(t))) >= 0; }
-var dentro = !!ls('mv-llave') || NO_CONTAR;
-if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
+var COMO_VISITA = Q.get('como') === 'visitante';   // para ver la app como alguien sin clave (no cuenta si ya tienes ?yo=1)
+var dentro = !COMO_VISITA && (!!ls('mv-llave') || NO_CONTAR);
+if (!dentro && !COMO_VISITA && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
 var DEMO = 'Volverán las oscuras golondrinas\nen tu balcón sus nidos a colgar,\ny otra vez con el ala a sus cristales\njugando llamarán.';
 var MOTIVOS = { poema: 'Medir poemas enteros, con su rima y su estrofa', ficha: 'Las fichas para imprimir', practica: 'La práctica: el alumno cuenta y la app corrige', banco: 'Los 30 poemas listos para medir y practicar', adaptar: 'Las adaptaciones para alumnado con NEE', pizarra: 'El modo pizarra digital', portada: 'Todo Mide versos', tutorial: 'La práctica con la app' };
 function candado(motivo) {
@@ -51,7 +52,7 @@ function candado(motivo) {
 }
 function pruebaClave() {
   if (claveBuena($('clave').value)) {
-    ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_clave');
+    if (!COMO_VISITA) ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_clave');
     $('claveMsg').textContent = '¡Dentro! Ya tienes todo abierto.';
     setTimeout(function () { $('mCandado').classList.add('oculto'); document.body.classList.remove('libre'); if (!$('v-medir').classList.contains('oculto')) medir(true); toast('Mide versos abierto entero 🐝'); }, 600);
   } else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en el post de Mide versos, dentro de ColmenIA.'; }
@@ -663,7 +664,7 @@ if (!dentro) document.body.classList.add('libre');
 /* Carátula de bienvenida: quien entra sin clave, una vez por visita */
 (function () {
   var visto = false; try { visto = !!sessionStorage.getItem('mv-car'); } catch (e) {}
-  if (dentro || visto || Q.get('v')) return;
+  if (dentro || (visto && !COMO_VISITA) || Q.get('v')) return;
   var c = $('caratula'); c.classList.remove('oculto'); cuenta('caratula_ve');
   function cierra(que) { c.classList.add('oculto'); try { sessionStorage.setItem('mv-car', '1'); } catch (e) {} cuenta('caratula_' + que); }
   c.addEventListener('click', function (e) {
