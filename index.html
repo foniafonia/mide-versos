@@ -6,7 +6,7 @@
 <title>Mide versos · ColmenIA</title>
 <meta name="description" content="Cuenta las sílabas de un verso paso a paso: sinalefa, acento final, nombre del verso y rima. Para el aula, la pizarra digital y el móvil.">
 <meta property="og:title" content="Mide versos · ColmenIA">
-<meta property="og:description" content="Escribe un verso y mira cómo se mide, paso a paso, con colores y palmadas. Para el aula y la pizarra digital.">
+<meta property="og:description" content="Escribe un verso y mira cómo se mide, paso a paso, con colores y palmadas. Para el aula y la pizarra digital. Herramienta de la comunidad ColmenIA.">
 <meta property="og:image" content="https://foniafonia.github.io/mide-versos/img/portada.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -161,6 +161,9 @@ body.proyecta .envol{max-width:1500px}
  #pJuego{padding-bottom:70px}
 }
 
+/* ===== puerta ===== */
+body.cerrada main,body.cerrada .pie,body.cerrada #abeja,body.cerrada nav.pest,body.cerrada .herr{display:none!important}
+.lista{padding-left:4px;list-style:none;margin:8px 0}.lista li{margin:6px 0}
 /* ===== adaptaciones NEE ===== */
 body.t2{font-size:21px}body.t2 .verso .txt{font-size:26px}body.t2 .sil{font-size:27px;min-width:54px;padding:8px 12px}body.t2 .pals{font-size:26px}body.t2 .ejer .versoG{font-size:38px}body.t2 textarea#texto{font-size:25px}body.t2 .paso p,body.t2 .tog{font-size:19px}
 body.t3{font-size:24px}body.t3 .verso .txt{font-size:32px}body.t3 .sil{font-size:34px;min-width:64px;padding:10px 14px}body.t3 .pals{font-size:32px}body.t3 .ejer .versoG{font-size:46px}body.t3 textarea#texto{font-size:30px}body.t3 .paso p,body.t3 .tog{font-size:22px}
@@ -226,6 +229,37 @@ body.contraste{background:#000;color:#fff}
   <div class="herr"><button type="button" data-adapta title="Adaptar a cada alumno: letra, colores, voz, modo guiado">♿ <span class="tx">Adaptar</span></button><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
 </div></header>
 
+<!-- ============ PUERTA: solo para quien está en ColmenIA ============ -->
+<section id="puerta" class="envol oculto">
+  <div class="hero">
+    <div class="caja">
+      <h1>Mide versos</h1>
+      <p>La herramienta para enseñar a medir versos que pidieron unas maestras de PT. Es para quienes están en <b>ColmenIA</b>.</p>
+      <ul class="lista">
+        <li>📏 Mide cualquier verso o poema paso a paso: sílabas, sinalefa, acento final, nombre del verso y rima.</li>
+        <li>👏 Palmadas con sonido y sílabas de colores.</li>
+        <li>🎯 Práctica en la que el alumno cuenta y la app corrige y explica.</li>
+        <li>♿ Se adapta: letra grande o fácil, mayúsculas, contraste, un paso cada vez, voz.</li>
+        <li>📚 30 poemas de clásicos y de Primaria, y fichas para imprimir.</li>
+      </ul>
+      <p><b>Mira cómo funciona:</b></p>
+      <div id="demo"></div>
+    </div>
+    <aside class="puente">
+      <div class="logos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
+      <b>Entra en ColmenIA para usarla</b>
+      <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA para su día a día.</p>
+      <p>Dentro está el post de Mide versos con la clave para abrirla, y puedes pedir la siguiente herramienta que necesites en tu aula.</p>
+      <a class="btn oro" data-sk="puerta" target="_blank" rel="noopener">Entrar en ColmenIA</a>
+      <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,.25);padding-top:10px">
+        <label for="clave"><b>¿Ya estás dentro?</b> Escribe la clave del post:</label>
+        <div class="fila" style="margin-top:6px"><input id="clave" autocomplete="off" autocapitalize="characters" style="flex:1;min-width:140px;border:0;border-radius:12px;padding:12px;font-size:18px" placeholder="Clave de la colmena"><button class="btn" id="bClave" type="button">Abrir</button></div>
+        <p id="claveMsg" role="status" style="min-height:1.4em"></p>
+      </div>
+    </aside>
+  </div>
+</section>
+
 <main>
 <!-- ============ MEDIR ============ -->
 <section id="v-medir" class="envol">
@@ -247,7 +281,7 @@ body.contraste{background:#000;color:#fff}
     <aside class="puente">
       <div class="logos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
       <b>La pidieron maestras de PT en ColmenIA</b>
-      <p>En ColmenIA, la comunidad de logopedia e IA de Gabinete Fönia, cada docente cuenta qué le falta en el aula y se hace la herramienta. Así nació Mide versos.</p>
+      <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA. Cada uno cuenta qué le falta en su aula y se hace. Así nació Mide versos.</p>
       <p>¿Necesitas otra ficha, otro nivel o versos de tu temario? Pídelo allí y la mejoramos entre todos.</p>
       <a class="btn oro" data-sk="portada" target="_blank" rel="noopener">Entrar en ColmenIA y pedir lo que te falta</a>
     </aside>
@@ -346,8 +380,8 @@ body.contraste{background:#000;color:#fff}
 <div id="contador" class="oculto" aria-hidden="true"></div>
 <div id="ficha"></div>
 
-<script src="metrica.js?v=7"></script>
-<script src="banco.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="metrica.js?v=8"></script>
+<script src="banco.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

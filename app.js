@@ -381,7 +381,7 @@ function ficha(modo, items, titulo) {
   });
   if (sol && items === EST.items && items.length > 1) h += '<p><b>Esquema de rima:</b> ' + esc(EST.poema.estrofas.map(function (e) { return e.map(function (v) { return v.marca; }).join(''); }).join('  ')) + (EST.poema.forma ? ' · ' + esc(EST.poema.forma) : '') + '</p>';
   if (!sol) h += '<p style="font-size:11pt"><b>Recuerda:</b> sinalefa (vocal final + vocal inicial = una sílaba) · aguda +1 · llana = · esdrújula −1</p>';
-  h += '<div class="fpie">Mide versos · ColmenIA, la comunidad de logopedia e IA (skool.com/logopedia-7339) · Gabinete Fönia · Material de apoyo para el aula.</div>';
+  h += '<div class="fpie">Mide versos · ColmenIA, comunidad de educación e IA de Gabinete Fönia (skool.com/logopedia-7339) · Gabinete Fönia · Material de apoyo para el aula.</div>';
   $('ficha').innerHTML = h;
   cuenta('imprimir'); cuenta('imprimir_' + modo);
   setTimeout(function () { window.print(); }, 150);
@@ -615,9 +615,34 @@ $('mejEnvia').addEventListener('click', function () {
 
 /* ===================== Arranque ===================== */
 aplicaAjustes();
-puentes();
 var inicio = Q.get('v');
 if (inicio && $('v-' + inicio)) vista(inicio);
 var vq = Q.get('verso'); if (vq) $('texto').value = vq.slice(0, 2000);
 medir(true);
+/* ===================== Puerta: solo para quien está en ColmenIA =====================
+   La clave va en el post de Mide versos dentro de Skool. Aquí solo guardamos su huella.
+   Para cambiarla: añade la huella nueva a CLAVES (fnv(normaliza('nueva'))). */
+var CLAVES = [1532103824];
+function normaliza(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''); }
+function fnv(t) { var x = 2166136261; for (var i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return x; }
+function claveBuena(t) { return CLAVES.indexOf(fnv(normaliza(t))) >= 0; }
+function abre() { document.body.classList.remove('cerrada'); $('puerta').classList.add('oculto'); medir(true); }
+var dentro = !!ls('mv-llave') || NO_CONTAR;
+if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
+if (!dentro) {
+  document.body.classList.add('cerrada'); $('puerta').classList.remove('oculto'); cuenta('puerta_ve');
+  var guardaItems = EST.items;
+  var demo = M.analiza('Verde que te quiero verde');
+  EST.items = [{ texto: 'Verde que te quiero verde', r: demo, marca: '' }];
+  $('demo').innerHTML = tarjetaVerso(EST.items[0], 0, false).replace('id="vs0"', 'id="vsDemo"');
+  EST.items = guardaItems;
+  $('demo').addEventListener('click', function (e) { var a = e.target.closest('[data-acc="palmas"]'); if (a) { audio(); palmea(a.closest('.verso'), a); cuenta('demo_palmas'); } });
+  var prueba = function () {
+    if (claveBuena($('clave').value)) { ls('mv-llave', '1'); cuenta('desbloquea'); cuenta('desbloquea_clave'); $('claveMsg').textContent = '¡Dentro! Bienvenida, bienvenido.'; setTimeout(abre, 500); }
+    else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en el post de Mide versos, dentro de ColmenIA.'; }
+  };
+  $('bClave').addEventListener('click', prueba);
+  $('clave').addEventListener('keydown', function (e) { if (e.key === 'Enter') prueba(); });
+}
+puentes();
 })();

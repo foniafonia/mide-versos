@@ -10,4 +10,6 @@ App para enseñar a medir versos en castellano (métrica silábica), pedida por 
 
 Contadores anónimos: abacus, espacio `foniafonia-versos`, claves `mv_*` (`mv_aperturas`, `mv_personas`, `mv_c_<canal>_aperturas`, `mv_medir`, `mv_practica_acaba`, `mv_skool`…). `?c=wa|tg|fb|ig|sk|ln` marca el canal; `?yo=1` no cuenta en ese aparato.
 
+Acceso: solo para quien está en ColmenIA (la comunidad de Gabinete Fönia para docentes, PT, AL, logopedas y otros profesionales de la educación). La clave va en el post de Skool; también abre con `?k=<clave>`. Para cambiarla, añade su huella a `CLAVES` en app.js.
+
 Gabinete Fönia · ColmenIA (https://www.skool.com/logopedia-7339).
