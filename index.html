@@ -162,6 +162,25 @@ body.proyecta .envol{max-width:1500px}
  #pJuego{padding-bottom:70px}
 }
 
+/* ===== carátula ===== */
+#caratula{position:fixed;inset:0;z-index:90;background:linear-gradient(160deg,#0E3524 0%,#1E5B3C 55%,#2FA866 100%);overflow:auto;padding:18px 16px}
+.car{max-width:900px;margin:0 auto;color:#fff;text-align:center}
+.carlogos{display:flex;gap:10px;justify-content:center}.carlogos img{height:56px;border-radius:12px;background:#fff;padding:3px}
+.car h1{font-size:46px;margin:10px 0 4px;font-weight:900}
+.carsub{font-size:20px;color:#DDF1E4;margin:0 auto 12px;max-width:640px}
+.cardemo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;margin:8px 0 16px}
+.cardemo .sil{color:var(--tinta);opacity:0;animation:carEnt .45s forwards}
+.cardemo b{font-size:34px;color:var(--oro);opacity:0;animation:carEnt .45s forwards;animation-delay:2.3s;margin-left:6px}
+.cardemo .sil:nth-child(1){animation-delay:.2s}.cardemo .sil:nth-child(2){animation-delay:.45s}.cardemo .sil:nth-child(3){animation-delay:.7s}.cardemo .sil:nth-child(4){animation-delay:.95s}.cardemo .sil:nth-child(5){animation-delay:1.2s}.cardemo .sil:nth-child(6){animation-delay:1.45s}.cardemo .sil:nth-child(7){animation-delay:1.7s}.cardemo .sil:nth-child(8){animation-delay:1.95s}
+@keyframes carEnt{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.cardos{display:grid;grid-template-columns:1fr 1.2fr;gap:12px;text-align:left}
+.carcol{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.25);border-radius:20px;padding:14px}
+.carcol.miel{background:#FFF8EA;color:var(--tinta);border-color:var(--oro)}
+.carcol h2{margin:0 0 6px;font-size:22px}.carcol ul{list-style:none;padding:0;margin:0 0 8px}.carcol li{margin:7px 0;font-size:17px}
+.carpasos{font-size:15px;background:var(--oro2);border-radius:12px;padding:8px 10px;margin:6px 0 10px}
+.carbot{justify-content:center;margin:16px 0 8px}.carbot .btn{font-size:19px;min-height:56px}
+@media (max-width:760px){.cardos{grid-template-columns:1fr}.car h1{font-size:36px}.carsub{font-size:18px}}
+@media (prefers-reduced-motion:reduce){.cardemo .sil,.cardemo b{opacity:1;animation:none}}
 /* ===== candado (término medio) ===== */
 body:not(.libre) .solo-libre{display:none!important}
 body.libre nav.pest [data-v=practicar]::after,body.libre #bProy .tx::after,body.libre [data-adapta]::after,body.libre [data-imp]::after,body.libre [data-pra]::after,body.libre [data-med]::after{content:" 🔒";font-size:.85em}
@@ -263,6 +282,27 @@ body.contraste{background:#000;color:#fff}
 </style>
 </head>
 <body>
+<!-- ============ CARÁTULA de bienvenida (sin clave) ============ -->
+<div id="caratula" class="oculto" role="dialog" aria-modal="true" aria-labelledby="carTit"><div class="car">
+  <div class="carlogos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
+  <h1 id="carTit">Mide versos</h1>
+  <p class="carsub">Aprende a medir versos con sílabas de colores, palmadas y paso a paso. Hecha para el aula, la pizarra digital y el móvil.</p>
+  <div class="cardemo" aria-hidden="true"><span class="sil c1">Ver<i>1</i></span><span class="sil c2">de<i>2</i></span><span class="sil c3">que<i>3</i></span><span class="sil c4">te<i>4</i></span><span class="sil c5">quie<i>5</i></span><span class="sil c6">ro<i>6</i></span><span class="sil c1">ver<i>7</i></span><span class="sil c2">de<i>8</i></span><b>= 8</b></div>
+  <div class="cardos">
+    <div class="carcol"><h2>🔓 Para probar ya</h2><ul>
+      <li>🎓 Tutorial animado para el alumnado: qué es una sílaba, la sinalefa, la sílaba fuerte…</li>
+      <li>✏️ Medir los versos que quieras, uno a uno, paso a paso.</li>
+      <li>💡 La guía para explicarlo en clase.</li></ul></div>
+    <div class="carcol miel"><h2>🐝 Todo, con ColmenIA</h2><ul>
+      <li>📜 Poemas enteros con su rima y su estrofa.</li>
+      <li>🎯 Práctica: el alumno cuenta y la app corrige.</li>
+      <li>🖨 Fichas para imprimir y modo pizarra.</li>
+      <li>♿ Adaptaciones para alumnado con NEE.</li></ul>
+      <p class="carpasos"><b>Cómo conseguir la clave:</b> 1) entra en ColmenIA, la comunidad de docentes, maestras de PT y AL, logopedas y otros profesionales de la educación · 2) busca el post «Mide versos» · 3) escribe aquí la clave.</p>
+      <div class="fila"><a class="btn oro" data-sk="caratula" target="_blank" rel="noopener">Entrar en ColmenIA</a><button class="btn sec" type="button" data-car="clave">🔑 Ya tengo la clave</button></div></div>
+  </div>
+  <div class="fila carbot"><button class="btn" type="button" data-car="aprende">🎓 Empezar con el tutorial</button><button class="btn sec" type="button" data-car="medir">✏️ Medir un verso</button></div>
+</div></div>
 <header class="cab"><div class="envol">
   <a class="marca" href="./" aria-label="Mide versos, inicio"><img src="img/colmenia-logo.webp" alt=""><span><b>Mide versos</b><small>Métrica paso a paso · ColmenIA</small></span></a>
   <nav class="pest" aria-label="Secciones">
@@ -282,11 +322,14 @@ body.contraste{background:#000;color:#fff}
     <div class="caja">
       <h1>Cuenta las sílabas de un verso, paso a paso</h1>
       <p>Escribe o pega un verso o un poema. Verás las sílabas con colores, las sinalefas, la sílaba fuerte, la regla del final, el nombre del verso y la rima. Para la clase, la pizarra digital y el móvil.</p>
-      <p class="solo-libre aviso" style="margin:8px 0">🔓 Medir un verso es abierto para todos. Los poemas enteros con su rima, la práctica, las fichas, las adaptaciones y la pizarra están en ColmenIA, con su clave. <button type="button" class="btn oro peq" data-candado="portada">Tengo la clave</button></p>
+      <p class="solo-libre aviso" style="margin:8px 0">🔓 <b>Para probar:</b> mide los versos que quieras, uno a uno, y haz el tutorial. 🐝 <b>Con ColmenIA:</b> poemas enteros con su rima, práctica, fichas, adaptaciones y pizarra. La clave está en el post de Mide versos, dentro de la comunidad. <button type="button" class="btn oro peq" data-candado="portada">Tengo la clave</button></p>
       <p><button type="button" class="btn sec peq" data-ir="aprende">🎓 Aprende a medir: tutorial para el alumnado</button></p>
       <p><b>Se adapta a cada alumno:</b> letra grande o fácil de leer, mayúsculas, alto contraste, un paso cada vez y conteo en voz alta. <button type="button" class="btn sec peq" data-adapta>♿ Adaptar</button></p>
       <label for="texto" class="oculto">Verso o poema</label>
-      <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas</textarea>
+      <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas
+en tu balcón sus nidos a colgar,
+y otra vez con el ala a sus cristales
+jugando llamarán.</textarea>
       <div class="fila ejemplos" id="ejemplos"></div>
       <div class="fila ajustes">
         <button class="btn" id="bMedir" type="button">📏 Medir</button>
@@ -414,9 +457,9 @@ body.contraste{background:#000;color:#fff}
 <div id="contador" class="oculto" aria-hidden="true"></div>
 <div id="ficha"></div>
 
-<script src="metrica.js?v=11"></script>
-<script src="banco.js?v=11"></script>
-<script src="app.js?v=11"></script>
-<script src="tutorial.js?v=11"></script>
+<script src="metrica.js?v=12"></script>
+<script src="banco.js?v=12"></script>
+<script src="app.js?v=12"></script>
+<script src="tutorial.js?v=12"></script>
 </body>
 </html>

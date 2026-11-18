@@ -40,6 +40,7 @@ function fnv(t) { var x = 2166136261; for (var i = 0; i < t.length; i++) { x ^= 
 function claveBuena(t) { return CLAVES.indexOf(fnv(normaliza(t))) >= 0; }
 var dentro = !!ls('mv-llave') || NO_CONTAR;
 if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
+var DEMO = 'Volverán las oscuras golondrinas\nen tu balcón sus nidos a colgar,\ny otra vez con el ala a sus cristales\njugando llamarán.';
 var MOTIVOS = { poema: 'Medir poemas enteros, con su rima y su estrofa', ficha: 'Las fichas para imprimir', practica: 'La práctica: el alumno cuenta y la app corrige', banco: 'Los 30 poemas listos para medir y practicar', adaptar: 'Las adaptaciones para alumnado con NEE', pizarra: 'El modo pizarra digital', portada: 'Todo Mide versos', tutorial: 'La práctica con la app' };
 function candado(motivo) {
   if (dentro) return false;
@@ -229,8 +230,10 @@ function totalItem(it) { return it.hemis ? it.hemis[0].r.total + it.hemis[1].r.t
 
 function pintaResultado(aviso) {
   var items = EST.items, h = aviso || '';
-  if (!dentro && items.length > 1) {
-    h += '<div class="aviso">📜 Has pegado un poema de ' + items.length + ' versos. Abajo tienes medido el primero. <b>Medir el poema entero, con su rima y su estrofa,</b> está en ColmenIA. <button class="btn oro peq" type="button" data-candado="poema">Abrir con la clave</button></div>';
+  var esDemo = $('texto').value.replace(/\s+/g, ' ').trim() === DEMO.replace(/\s+/g, ' ');
+  if (!dentro && items.length > 1 && esDemo) h += '<div class="aviso">📜 <b>Ejemplo de poema entero:</b> así se miden los poemas con su rima dentro de ColmenIA. Aquí puedes medir los versos que quieras, uno a uno. Para pegar tus propios poemas, entra en ColmenIA: la clave está en el post de Mide versos. <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button></div>';
+  if (!dentro && items.length > 1 && !esDemo) {
+    h += '<div class="aviso">📜 Has pegado un poema de ' + items.length + ' versos y aquí tienes medido el primero. Abierto puedes medir los versos de uno en uno. <b>El poema entero, con su rima y su estrofa,</b> está en ColmenIA: entra, busca el post de Mide versos y escribe su clave. <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button> <a class="btn sec peq" data-sk="poema" target="_blank" rel="noopener">Entrar en ColmenIA</a></div>';
     EST.items = items = items.slice(0, 1); cuenta('candado_poema_ve');
   }
   if (items.length > 1) h += resumenPoema();
@@ -657,6 +660,22 @@ window.MV = { cuenta: cuenta, cuentaUnaVez: cuentaUnaVez, palmada: palmada, audi
   medirVerso: function (v) { $('texto').value = v; $('oObj').value = ''; vista('medir'); medir(); setTimeout(function () { $('resultado').scrollIntoView({ behavior: 'smooth' }); }, 60); },
   practicar: function (lista) { empiezaPractica(lista, 'tutorial'); }, ajustes: function () { return AJ; } };
 if (!dentro) document.body.classList.add('libre');
+/* Carátula de bienvenida: quien entra sin clave, una vez por visita */
+(function () {
+  var visto = false; try { visto = !!sessionStorage.getItem('mv-car'); } catch (e) {}
+  if (dentro || visto || Q.get('v')) return;
+  var c = $('caratula'); c.classList.remove('oculto'); cuenta('caratula_ve');
+  function cierra(que) { c.classList.add('oculto'); try { sessionStorage.setItem('mv-car', '1'); } catch (e) {} cuenta('caratula_' + que); }
+  c.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-car]'); if (!b) { if (e.target.closest('[data-sk]')) try { sessionStorage.setItem('mv-car', '1'); } catch (e2) {} return; }
+    var q = b.dataset.car; cierra(q);
+    if (q === 'aprende') vista('aprende');
+    if (q === 'medir') { vista('medir'); $('texto').focus(); }
+    if (q === 'clave') candado('portada');
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !c.classList.contains('oculto')) cierra('esc'); });
+  setTimeout(function () { var f = c.querySelector('[data-car="aprende"]'); if (f) f.focus(); }, 100);
+})();
 aplicaAjustes();
 var inicio = Q.get('v');
 if (inicio && $('v-' + inicio)) vista(inicio);
