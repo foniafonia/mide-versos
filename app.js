@@ -43,7 +43,7 @@ if (!dentro && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dent
 var MOTIVOS = { poema: 'Medir poemas enteros, con su rima y su estrofa', ficha: 'Las fichas para imprimir', practica: 'La práctica: el alumno cuenta y la app corrige', banco: 'Los 30 poemas listos para medir y practicar', adaptar: 'Las adaptaciones para alumnado con NEE', pizarra: 'El modo pizarra digital', portada: 'Todo Mide versos', tutorial: 'La práctica con la app' };
 function candado(motivo) {
   if (dentro) return false;
-  $('candTit').textContent = (MOTIVOS[motivo] || 'Esto') + ' está en ColmenIA';
+  $('candTit').textContent = (MOTIVOS[motivo] || 'Esto') + ': con la clave de ColmenIA';
   $('claveMsg').textContent = ''; $('mCandado').classList.remove('oculto'); setTimeout(function () { $('clave').focus(); }, 50);
   cuenta('candado_' + motivo);
   return true;

@@ -77,7 +77,7 @@ var L = [
       T(1800, function () { cont.textContent = '5?'; cap.textContent = '«Era» acaba en a… «un» empieza por u…'; cs[1].classList.add('par'); cs[2].classList.add('par'); });
       T(3000, function () { cs[1].classList.add('izq'); cs[2].classList.add('der'); });
       T(3700, function () {
-        $('sw').innerHTML = '<span class="sil tch on c1">E<i>1</i></span><span class="sil tch on c2">ra<span class="une">‿</span>un<i>2</i></span><span style="width:18px"></span><span class="sil tch on c3">ni<i>3</i></span><span class="sil tch on c4">ño<i>4</i></span>';
+        $('sw').innerHTML = '<span class="sil tch on c1">E<i>1</i></span><span class="sil tch on c2"><span>ra<span class="une">‿</span>un</span><i>2</i></span><span style="width:18px"></span><span class="sil tch on c3">ni<i>3</i></span><span class="sil tch on c4">ño<i>4</i></span>';
         cap.textContent = '¡Se dan la mano! ra‿un cuenta como una'; cont.textContent = '4'; clap(true);
       });
     },
