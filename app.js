@@ -674,7 +674,7 @@ if (!dentro) document.body.classList.add('libre');
     if (q === 'clave') candado('portada');
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !c.classList.contains('oculto')) cierra('esc'); });
-  setTimeout(function () { var f = c.querySelector('[data-car="aprende"]'); if (f) f.focus(); }, 100);
+  setTimeout(function () { c.scrollTop = 0; var f = c.querySelector('[data-car="aprende"]'); if (f) try { f.focus({ preventScroll: true }); } catch (e) {} }, 100);
 })();
 aplicaAjustes();
 var inicio = Q.get('v');
