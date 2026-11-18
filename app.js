@@ -55,7 +55,7 @@ function pruebaClave() {
     if (!COMO_VISITA) ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_clave');
     $('claveMsg').textContent = '¡Dentro! Ya tienes todo abierto.';
     setTimeout(function () { $('mCandado').classList.add('oculto'); document.body.classList.remove('libre'); if (!$('v-medir').classList.contains('oculto')) medir(true); toast('Mide versos abierto entero 🐝'); }, 600);
-  } else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en el post de Mide versos, dentro de ColmenIA.'; }
+  } else { cuenta('clave_mal'); $('claveMsg').textContent = 'Esa no es. Está en ColmenIA › Cursos › Pide mentoría › Mide versos.'; }
 }
 $('bClave').addEventListener('click', pruebaClave);
 $('clave').addEventListener('keydown', function (e) { if (e.key === 'Enter') pruebaClave(); });
