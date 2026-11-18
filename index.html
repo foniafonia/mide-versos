@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mide versos · ColmenIA</title>
+<meta name="description" content="Cuenta las sílabas de un verso paso a paso: sinalefa, acento final, nombre del verso y rima. Para el aula, la pizarra digital y el móvil.">
+<meta property="og:title" content="Mide versos · ColmenIA">
+<meta property="og:description" content="Escribe un verso y mira cómo se mide, paso a paso, con colores y palmadas. Para el aula y la pizarra digital.">
+<meta property="og:image" content="https://foniafonia.github.io/mide-versos/img/portada.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://foniafonia.github.io/mide-versos/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0E3524">
+<link rel="icon" href="img/colmenia-logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Lora:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--noche:#0E3524;--verde:#2FA866;--verde2:#1E7B4B;--oro:#F2B33D;--oro2:#FFF1CC;--crema:#FFF8EA;--tinta:#10231A;--suave:#4d6457;--linea:#E3D9C2;--rojo:#C94440;--blanco:#fff;--sombra:0 4px 14px rgba(14,53,36,.12);
+ --s1:#FFD6D6;--b1:#D94E4E;--s2:#FFE3BF;--b2:#D9822B;--s3:#D3F2DD;--b3:#2A9457;--s4:#D6E6FF;--b4:#2F6FD6;--s5:#E8DBFF;--b5:#7A4BCB;--s6:#FFD9EC;--b6:#C94C8C}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--crema);color:var(--tinta);font:18px/1.45 "Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-text-size-adjust:100%}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--verde2)}
+.oculto{display:none!important}
+.envol{max-width:1080px;margin:0 auto;padding:0 16px}
+/* cabecera */
+.cab{background:var(--noche);color:#fff;position:sticky;top:0;z-index:30;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.cab .envol{display:flex;align-items:center;gap:12px;min-height:64px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;margin-right:auto}
+.marca img{width:42px;height:42px;border-radius:10px;background:#fff}
+.marca b{font-size:22px;font-weight:900;letter-spacing:.2px}.marca small{display:block;font-size:13px;color:#BFE3CC;font-weight:700}
+nav.pest{display:flex;gap:6px;flex-wrap:wrap}
+nav.pest button{background:transparent;border:2px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:7px 14px;font-weight:800;cursor:pointer;min-height:44px}
+nav.pest button[aria-pressed=true]{background:var(--oro);border-color:var(--oro);color:var(--noche)}
+.herr{display:flex;gap:6px}
+.herr button{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:12px;padding:8px 10px;font-weight:800;cursor:pointer;min-height:44px}
+/* portada */
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin:18px 0 8px;align-items:stretch}
+.hero h1{font-size:34px;line-height:1.1;margin:0 0 8px;font-weight:900;color:var(--noche)}
+.hero p{margin:0 0 10px;color:var(--suave)}
+.caja{background:#fff;border:2px solid var(--linea);border-radius:20px;padding:16px;box-shadow:var(--sombra)}
+.puente{background:linear-gradient(135deg,#0E3524,#1E5B3C);color:#fff;border:0;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.puente b{font-size:19px}.puente p{margin:0;color:#DDF1E4;font-size:16px}
+.puente .logos{display:flex;gap:8px;align-items:center}.puente .logos img{height:38px;border-radius:8px;background:#fff;padding:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:14px;padding:12px 18px;font-weight:900;cursor:pointer;text-decoration:none;min-height:48px;font-size:17px;background:var(--verde);color:#fff}
+.btn.oro{background:var(--oro);color:var(--noche)}.btn.sec{background:#fff;color:var(--noche);border:2px solid var(--linea)}.btn.peq{padding:8px 12px;min-height:40px;font-size:15px}
+.btn:focus-visible,button:focus-visible,a:focus-visible,textarea:focus-visible{outline:4px solid var(--oro);outline-offset:2px}
+/* medir */
+textarea#texto{width:100%;min-height:96px;border:2px solid var(--linea);border-radius:16px;padding:14px;font:20px/1.5 "Lora",Georgia,serif;background:#fff;resize:vertical}
+.fila{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ejemplos{margin-top:8px}.ejemplos button{background:var(--oro2);border:1px solid #F0D9A0;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:15px;min-height:38px}
+.ajustes{margin-top:10px;gap:14px}
+.interr{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-weight:700;font-size:16px}
+.interr input{width:22px;height:22px;accent-color:var(--verde2)}
+select{border:2px solid var(--linea);border-radius:12px;padding:8px;background:#fff;min-height:44px}
+/* resultado */
+#resultado{margin:16px 0 30px}
+.resumen{background:var(--noche);color:#fff;border-radius:20px;padding:16px;margin-bottom:14px}
+.resumen h2{margin:0 0 6px;font-size:22px}.resumen .esq{font:700 26px/1.3 "Lora",Georgia,serif;letter-spacing:3px;color:var(--oro)}
+.resumen p{margin:4px 0;color:#DDF1E4}
+.verso{background:#fff;border:2px solid var(--linea);border-radius:20px;padding:14px;margin-bottom:12px;box-shadow:var(--sombra)}
+.verso .cabv{display:flex;gap:10px;align-items:flex-start}
+.verso .num{flex:0 0 auto;min-width:64px;text-align:center;background:var(--noche);color:#fff;border-radius:14px;padding:6px 8px;font-weight:900;font-size:28px;line-height:1}
+.verso .num small{display:block;font-size:11px;font-weight:700;color:#BFE3CC;margin-top:3px}
+.verso .txt{font:500 21px/1.35 "Lora",Georgia,serif;flex:1}
+.verso .txt small{display:block;font:700 14px/1.3 "Nunito",sans-serif;color:var(--suave);margin-top:3px}
+.letra{flex:0 0 auto;width:44px;height:44px;border-radius:50%;background:var(--oro);color:var(--noche);font:900 22px/44px "Lora",serif;text-align:center}
+.letra.nada{background:#eee;color:#999}
+.cola{background:var(--oro2);border-bottom:3px solid var(--oro);padding:0 2px;border-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px;padding-top:12px}
+.sil{position:relative;display:inline-flex;flex-direction:column;align-items:center;min-width:44px;padding:6px 10px 6px;border-radius:12px;border-bottom:5px solid;font:700 21px/1.1 "Lora",Georgia,serif;transition:transform .12s}
+.sil i{font:900 12px/1 "Nunito",sans-serif;font-style:normal;color:var(--suave);margin-top:4px}
+.sil.ton{font-weight:900;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:4px}
+.sil.ton::before{content:"";position:absolute;top:-10px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--rojo)}
+.sil.ext{background:#fff!important;border:2px dashed var(--b2);border-bottom-width:5px;color:var(--b2)}
+.sil.menos{opacity:.45;text-decoration:line-through}
+.sil.ya{transform:scale(1.18);box-shadow:0 0 0 4px var(--oro)}
+.c1{background:var(--s1);border-color:var(--b1)}.c2{background:var(--s2);border-color:var(--b2)}.c3{background:var(--s3);border-color:var(--b3)}.c4{background:var(--s4);border-color:var(--b4)}.c5{background:var(--s5);border-color:var(--b5)}.c6{background:var(--s6);border-color:var(--b6)}
+.une{color:var(--rojo);font-weight:900}
+.acciones{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+details.pasos{margin-top:10px;border-top:1px dashed var(--linea);padding-top:8px}
+details.pasos summary{cursor:pointer;font-weight:900;color:var(--verde2);min-height:40px;display:flex;align-items:center}
+.paso{margin:10px 0;padding-left:44px;position:relative}
+.paso::before{content:attr(data-n);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--verde);color:#fff;font-weight:900;text-align:center;line-height:32px}
+.paso h3{margin:0 0 4px;font-size:18px}
+.paso p{margin:4px 0;color:var(--suave);font-size:16px}
+.pals{display:flex;flex-wrap:wrap;gap:6px 14px;font:500 21px/1.4 "Lora",Georgia,serif}
+.pals .t{font-weight:900;color:var(--rojo);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.pals .pt{color:#bbb}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.tog{border:2px solid var(--linea);background:#fff;border-radius:12px;padding:6px 10px;cursor:pointer;text-align:left;font-size:15px;min-height:44px}
+.tog b{font:700 18px "Lora",serif}
+.tog.on{border-color:var(--verde);background:#EAF8EF}.tog.lic{border-color:var(--oro);background:var(--oro2)}
+.tog.fija{cursor:default;opacity:.85}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:900;font-size:22px}
+.formula span{background:var(--crema);border:2px solid var(--linea);border-radius:12px;padding:4px 12px}
+.formula .igual{background:var(--noche);color:#fff;border-color:var(--noche)}
+.aviso{background:var(--oro2);border-left:6px solid var(--oro);border-radius:12px;padding:10px 12px;margin:10px 0;font-size:16px}
+.hemis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hemis .verso{box-shadow:none;margin:0;border-style:dashed}
+.glos{font-size:15px;color:var(--suave)}
+/* practicar */
+.prac{max-width:760px;margin:18px auto}
+.niveles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.nivel{border:2px solid var(--linea);background:#fff;border-radius:16px;padding:12px;cursor:pointer;text-align:left;min-height:84px}
+.nivel b{display:block;font-size:17px}.nivel span{font-size:14px;color:var(--suave)}
+.nivel[aria-pressed=true]{border-color:var(--verde);background:#EAF8EF}
+.ejer{text-align:center}
+.ejer .versoG{font:500 30px/1.3 "Lora",Georgia,serif;margin:14px 0}
+.marcador{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--suave)}
+.numeros{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:520px;margin:10px auto}
+.numeros button{min-height:56px;border-radius:14px;border:2px solid var(--linea);background:#fff;font-weight:900;font-size:24px;cursor:pointer}
+.numeros button:hover{border-color:var(--verde)}
+.tipos{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.tipos button{min-height:56px;padding:0 18px;border-radius:14px;border:2px solid var(--linea);background:#fff;font-weight:900;font-size:19px;cursor:pointer}
+.palmea{width:120px;height:120px;border-radius:50%;border:0;background:var(--oro);font-size:52px;cursor:pointer;box-shadow:0 6px 0 #C58A1C;margin:6px auto;display:block}
+.palmea:active{transform:translateY(4px);box-shadow:0 2px 0 #C58A1C}
+.bien{color:var(--verde2);font-weight:900;font-size:22px}.mal{color:var(--rojo);font-weight:900;font-size:22px}
+.abejas{font-size:24px;letter-spacing:2px}
+/* banco */
+.filtro{margin:16px 0 10px}
+.tarjetas{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-bottom:30px}
+.tarj{background:#fff;border:2px solid var(--linea);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.tarj h3{margin:0;font-size:18px}.tarj .aut{font-size:14px;color:var(--suave);font-weight:700}
+.tarj .prim{font:italic 500 17px/1.35 "Lora",serif;color:#333;flex:1}
+.etq{display:inline-block;background:var(--oro2);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:800}
+/* guía */
+.guia{max-width:820px;margin:18px auto 30px}
+.guia .caja{margin-bottom:10px}.guia h2{margin:0 0 6px;font-size:21px;color:var(--noche)}
+.guia p{margin:6px 0}.ej{font:500 19px/1.4 "Lora",serif;background:var(--crema);border-radius:12px;padding:8px 12px;margin:6px 0}
+/* pie */
+.pie{border-top:2px solid var(--linea);margin-top:20px;padding:18px 0 90px;color:var(--suave);font-size:15px}
+.pie .logos{display:flex;gap:12px;align-items:center;margin-bottom:8px}.pie .logos img{height:48px;border-radius:8px}
+/* abeja */
+#abeja{position:fixed;right:14px;bottom:14px;z-index:40;background:var(--oro);color:var(--noche);border:3px solid var(--noche);border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);min-height:52px;font-size:16px}
+.modal{position:fixed;inset:0;background:rgba(14,53,36,.55);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal .caja{max-width:520px;width:100%;max-height:92vh;overflow:auto}
+.modal textarea,.modal input{width:100%;border:2px solid var(--linea);border-radius:12px;padding:10px;font-size:17px}
+.chip{border:2px solid var(--linea);background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:15px;margin:3px 2px;min-height:40px}
+.chip[aria-pressed=true]{background:#EAF8EF;border-color:var(--verde)}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--noche);color:#fff;padding:10px 16px;border-radius:12px;z-index:70;font-weight:800}
+/* proyectar (pizarra digital) */
+body.proyecta{font-size:22px}
+body.proyecta .hero,body.proyecta .pie,body.proyecta #abeja,body.proyecta .ejemplos{display:none}
+body.proyecta .verso .txt{font-size:34px}body.proyecta .sil{font-size:36px;min-width:64px;padding:10px 14px}
+body.proyecta .pals{font-size:30px}body.proyecta .verso .num{font-size:44px;min-width:90px}
+body.proyecta .ejer .versoG{font-size:46px}body.proyecta textarea#texto{font-size:28px}
+body.proyecta .envol{max-width:1500px}
+/* móvil */
+@media (max-width:760px){
+ .hero{grid-template-columns:1fr}.hero h1{font-size:27px}
+ .marca small{display:none}nav.pest{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap}nav.pest button{flex:0 0 auto}
+ .hemis{grid-template-columns:1fr}.numeros{grid-template-columns:repeat(4,1fr)}
+ .verso .txt{font-size:19px}.sil{font-size:19px;min-width:38px;padding:5px 8px}.paso{padding-left:38px}
+ .herr .tx{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.sil.ya{transform:none}}
+/* impresión */
+#ficha{display:none}
+@media print{
+ body{background:#fff}body>*:not(#ficha){display:none!important}#ficha{display:block;font-size:13pt;color:#000}
+ #ficha .fcab{display:flex;align-items:center;gap:12px;border-bottom:2px solid #0E3524;padding-bottom:6px;margin-bottom:10px}
+ #ficha .fcab img{height:44px}#ficha h1{font-size:20pt;margin:0;flex:1}
+ #ficha .fv{border:1px solid #bbb;border-radius:8px;padding:8px 10px;margin:0 0 8px;break-inside:avoid}
+ #ficha .fv .t{font:500 15pt "Lora",Georgia,serif}
+ #ficha .lin{border-bottom:1px solid #999;height:26px;margin:6px 0}
+ #ficha .cuad{display:inline-block;width:46px;height:30px;border:1.5px solid #000;border-radius:6px;vertical-align:middle;margin:0 6px}
+ #ficha .chk{display:inline-block;width:14px;height:14px;border:1.5px solid #000;margin:0 4px 0 10px;vertical-align:middle}
+ #ficha .sil{font-size:14pt;min-width:0;padding:2px 6px;border-bottom-width:3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #ficha .sil.ton::before{top:-7px;width:7px;height:7px;margin-left:-3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #ficha .chips{margin:6px 0 0;padding-top:8px}
+ #ficha .fpie{margin-top:12px;border-top:1px solid #999;padding-top:6px;font-size:10pt;color:#333}
+}
+</style>
+</head>
+<body>
+<header class="cab"><div class="envol">
+  <a class="marca" href="./" aria-label="Mide versos, inicio"><img src="img/colmenia-logo.webp" alt=""><span><b>Mide versos</b><small>Métrica paso a paso · ColmenIA</small></span></a>
+  <nav class="pest" aria-label="Secciones">
+    <button type="button" data-v="medir" aria-pressed="true">✏️ Medir</button>
+    <button type="button" data-v="practicar" aria-pressed="false">🎯 Practicar</button>
+    <button type="button" data-v="banco" aria-pressed="false">📚 Versos</button>
+    <button type="button" data-v="guia" aria-pressed="false">💡 Cómo se mide</button>
+  </nav>
+  <div class="herr"><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
+</div></header>
+
+<main>
+<!-- ============ MEDIR ============ -->
+<section id="v-medir" class="envol">
+  <div class="hero">
+    <div class="caja">
+      <h1>Cuenta las sílabas de un verso, paso a paso</h1>
+      <p>Escribe o pega un verso o un poema. Verás las sílabas con colores, las sinalefas, la sílaba fuerte, la regla del final, el nombre del verso y la rima. Para la clase, la pizarra digital y el móvil.</p>
+      <label for="texto" class="oculto">Verso o poema</label>
+      <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas</textarea>
+      <div class="fila ejemplos" id="ejemplos"></div>
+      <div class="fila ajustes">
+        <button class="btn" id="bMedir" type="button">📏 Medir</button>
+        <label class="interr"><input type="checkbox" id="oSin" checked> Sinalefa</label>
+        <label class="interr"><input type="checkbox" id="oSon" checked> Sonido</label>
+        <label class="interr">Metro: <select id="oObj" aria-label="Metro esperado"><option value="">automático</option></select></label>
+      </div>
+    </div>
+    <aside class="puente">
+      <div class="logos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
+      <b>La pidieron maestras de PT en ColmenIA</b>
+      <p>En ColmenIA, la comunidad de logopedia e IA de Gabinete Fönia, cada docente cuenta qué le falta en el aula y se hace la herramienta. Así nació Mide versos.</p>
+      <p>¿Necesitas otra ficha, otro nivel o versos de tu temario? Pídelo allí y la mejoramos entre todos.</p>
+      <a class="btn oro" data-sk="portada" target="_blank" rel="noopener">Entrar en ColmenIA y pedir lo que te falta</a>
+    </aside>
+  </div>
+  <div id="resultado" aria-live="polite"></div>
+</section>
+
+<!-- ============ PRACTICAR ============ -->
+<section id="v-practicar" class="envol oculto">
+  <div class="prac">
+    <div id="pInicio" class="caja">
+      <h2 style="margin-top:0">🎯 Practicar: el alumno cuenta y la app corrige</h2>
+      <p>Elige el nivel. Saldrán 8 versos. Se puede contestar con los números o palmeando cada sílaba con el botón de la mano.</p>
+      <div class="niveles" id="niveles">
+        <button class="nivel" type="button" data-n="1" aria-pressed="true"><b>1 · Contar</b><span>Versos sin uniones. Primaria.</span></button>
+        <button class="nivel" type="button" data-n="2" aria-pressed="false"><b>2 · Sinalefa</b><span>Vocales que se juntan entre palabras.</span></button>
+        <button class="nivel" type="button" data-n="3" aria-pressed="false"><b>3 · Acento final</b><span>Agudas (+1) y esdrújulas (−1).</span></button>
+        <button class="nivel" type="button" data-n="4" aria-pressed="false"><b>4 · Todo junto</b><span>Mezcla y licencias: hiato, diéresis.</span></button>
+      </div>
+      <p class="fila" style="margin-top:12px"><label class="interr"><input type="checkbox" id="pTipo" checked> Preguntar también cómo es la última palabra</label></p>
+      <p class="fila"><button class="btn" id="pEmpieza" type="button">Empezar</button><span class="glos" id="pPropios"></span></p>
+    </div>
+    <div id="pJuego" class="caja ejer oculto"></div>
+  </div>
+</section>
+
+<!-- ============ BANCO ============ -->
+<section id="v-banco" class="envol oculto">
+  <div class="fila filtro" id="filtro">
+    <button class="chip" type="button" data-f="todos" aria-pressed="true">Todos</button>
+    <button class="chip" type="button" data-f="primaria" aria-pressed="false">Primaria</button>
+    <button class="chip" type="button" data-f="clasico" aria-pressed="false">Clásicos</button>
+  </div>
+  <p class="glos">Solo textos de dominio público (tradición popular y autores fallecidos hace más de 80 años) y versos escritos para esta app.</p>
+  <div class="tarjetas" id="tarjetas"></div>
+</section>
+
+<!-- ============ GUÍA ============ -->
+<section id="v-guia" class="envol oculto"><div class="guia" id="guia"></div></section>
+</main>
+
+<footer class="envol pie">
+  <div class="logos"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"><img src="img/colmenia-logo.webp" alt="ColmenIA"></div>
+  <p><b>Mide versos</b> · Hecho en ColmenIA · Gabinete Fönia (Melilla). Herramienta de apoyo para el aula, hecha con IA y revisada con una batería de versos conocidos. En casos dudosos (hiatos, licencias) manda el oído y el criterio de la docente.</p>
+  <p>Contamos visitas y botones pulsados, sin datos personales. Lo que escribes se queda en este aparato. <a data-sk="pie" target="_blank" rel="noopener">Entrar en ColmenIA</a></p>
+</footer>
+
+<!-- ============ ABEJA ============ -->
+<div class="modal oculto" id="mAbeja" role="dialog" aria-modal="true" aria-labelledby="tAbeja"><div class="caja">
+  <h2 id="tAbeja" style="margin-top:0">🐝 ¿Qué le falta a Mide versos?</h2>
+  <p class="glos">Toca lo que te gustaría o escríbelo. Lo leemos el equipo de Fönia y ColmenIA. No escribas nombres ni datos del alumnado.</p>
+  <div id="mejChips"></div>
+  <p><label for="mejTxt"><b>Cuéntanos</b></label><textarea id="mejTxt" rows="4" placeholder="Por ejemplo: un verso que no mide bien, una ficha que necesitas, versos de tu temario…"></textarea></p>
+  <p><label for="mejFirma">Tu nombre o centro (si quieres)</label><input id="mejFirma" maxlength="60"></p>
+  <p class="fila"><button class="btn" id="mejEnvia" type="button">Enviar</button><button class="btn sec" id="mejCierra" type="button">Cerrar</button></p>
+  <p id="mejOk" class="glos" role="status"></p>
+</div></div>
+<button id="abeja" type="button" aria-label="Pedir mejoras">🐝 Mejoras</button>
+
+<div id="ficha"></div>
+
+<script src="metrica.js"></script>
+<script src="banco.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

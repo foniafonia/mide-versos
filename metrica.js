@@ -338,7 +338,7 @@ function compuesto(verso, mitad, permite) {
     var b = permite ? ajusta(der, mitad) : (function () { var x = mide(der); return x && x.total === mitad ? { r: x, coste: 0, cambios: {} } : null; })();
     if (!b) continue;
     var coste = a.coste + b.coste + (pal[k].pausa ? 0 : 0.3) + Math.abs(k + 0.5 - pal.length / 2) * 0.01;
-    if (!mejor || coste < mejor.coste) mejor = { coste: coste, lic: a.coste + b.coste, k: k, hemis: [a.r, b.r], total: a.r.total + b.r.total, izq: izq, der: der };
+    if (!mejor || coste < mejor.coste) mejor = { coste: coste, lic: a.coste + b.coste, camb: [a.cambios, b.cambios], k: k, hemis: [a.r, b.r], total: a.r.total + b.r.total, izq: izq, der: der };
   }
   return mejor;
 }
