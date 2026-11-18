@@ -253,7 +253,7 @@ function pasosSimple(r, i, hk) {
   });
   h += '<div class="paso" data-n="2"><h3>Mira las vocales que se juntan</h3>' +
     (tg.length ? '<div class="toggles">' + tg.join('') + '</div><p>Pulsa una unión para cambiarla y ver cómo cambia la medida. La <b>sinalefa</b> junta la vocal final de una palabra con la primera de la siguiente.</p>' : '<p>No hay vocales que se junten: cada sílaba cuenta una.</p>') +
-    (r.ajustado && r.sugeridas ? '<div class="aviso">Para que mida ' + r.total + ', como el resto del poema, se aplica: <b>' + r.sugeridas.map(function (s) { return s.tipo; }).join(', ') + '</b>. Es una licencia: el poeta separa o junta sonidos para que cuadre el verso.</div>' : '') + '</div>';
+    (r.ajustado && r.sugeridas ? '<div class="aviso">Para que mida ' + r.total + (EST.items.length > 1 ? ', como el resto del poema' : '') + ', se aplica: <b>' + r.sugeridas.map(function (s) { return s.tipo; }).join(', ') + '</b>. Es una licencia: el poeta separa o junta sonidos para que cuadre el verso.</div>' : '') + '</div>';
   // 3. sílabas fonológicas
   h += '<div class="paso" data-n="3"><h3>Cuenta las sílabas que suenan</h3><p>Al leerlo en voz alta salen <b>' + r.fonologicas + '</b> golpes de voz.</p></div>';
   // 4. ley del acento final
