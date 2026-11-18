@@ -16,7 +16,7 @@
 <meta name="theme-color" content="#0E3524">
 <link rel="icon" href="img/colmenia-logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Lora:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Nunito:wght@400;700;900&family=Lora:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
 <style>
 :root{--noche:#0E3524;--verde:#2FA866;--verde2:#1E7B4B;--oro:#F2B33D;--oro2:#FFF1CC;--crema:#FFF8EA;--tinta:#10231A;--suave:#4d6457;--linea:#E3D9C2;--rojo:#C94440;--blanco:#fff;--sombra:0 4px 14px rgba(14,53,36,.12);
  --s1:#FFD6D6;--b1:#D94E4E;--s2:#FFE3BF;--b2:#D9822B;--s3:#D3F2DD;--b3:#2A9457;--s4:#D6E6FF;--b4:#2F6FD6;--s5:#E8DBFF;--b5:#7A4BCB;--s6:#FFD9EC;--b6:#C94C8C}
@@ -160,6 +160,37 @@ body.proyecta .envol{max-width:1500px}
  #abeja{padding:8px 12px;min-height:46px;font-size:15px;right:10px;bottom:10px}
  #pJuego{padding-bottom:70px}
 }
+
+/* ===== adaptaciones NEE ===== */
+body.t2{font-size:21px}body.t2 .verso .txt{font-size:26px}body.t2 .sil{font-size:27px;min-width:54px;padding:8px 12px}body.t2 .pals{font-size:26px}body.t2 .ejer .versoG{font-size:38px}body.t2 textarea#texto{font-size:25px}body.t2 .paso p,body.t2 .tog{font-size:19px}
+body.t3{font-size:24px}body.t3 .verso .txt{font-size:32px}body.t3 .sil{font-size:34px;min-width:64px;padding:10px 14px}body.t3 .pals{font-size:32px}body.t3 .ejer .versoG{font-size:46px}body.t3 textarea#texto{font-size:30px}body.t3 .paso p,body.t3 .tog{font-size:22px}
+body.facil,body.facil .verso .txt,body.facil .sil,body.facil .pals,body.facil .versoG,body.facil textarea#texto,body.facil .ej,body.facil .tog b,body.facil .prim,body.facil .letra,body.facil .esq{font-family:"Atkinson Hyperlegible",Verdana,sans-serif!important;font-style:normal!important;letter-spacing:.04em;word-spacing:.14em}
+body.facil{line-height:1.65}
+body.mayus .sil,body.mayus .verso .txt,body.mayus .pals,body.mayus .versoG,body.mayus .tog b,body.mayus .ej,body.mayus .prim{text-transform:uppercase}
+body.mayus .verso .txt small{text-transform:none}
+body.contraste{background:#000;color:#fff}
+.contraste .caja,.contraste .verso,.contraste .tarj,.contraste .nivel,.contraste .tog,.contraste textarea#texto,.contraste .numeros button,.contraste .tipos button,.contraste .ejemplos button,.contraste .chip,.contraste select,.contraste .btn.sec{background:#000!important;color:#fff!important;border-color:#fff!important}
+.contraste .sil{background:#000!important;color:#FFE600;border-color:#FFE600!important}
+.contraste .sil i,.contraste .paso p,.contraste .glos,.contraste .hero p,.contraste .verso .txt small,.contraste .tarj .aut,.contraste .nivel span,.contraste .marcador,.contraste .pie{color:#fff}
+.contraste .pals .t,.contraste .sil.ton{color:#FFE600}.contraste .formula span{background:#000;color:#fff;border-color:#fff}
+.contraste .aviso{background:#1a1a1a;color:#fff;border-color:#FFE600}.contraste .cola{background:#333;color:#FFE600}
+.contraste .hero h1,.contraste .guia h2,.contraste .tarj h3{color:#fff}.contraste .tarj .prim{color:#fff}
+.contraste .bien{color:#7CFF9E}.contraste .mal{color:#FFB35C}
+.suave .c1,.suave .c3,.suave .c5{background:#EEF3F0;border-color:#9DB5A6}.suave .c2,.suave .c4,.suave .c6{background:#F6F1E4;border-color:#C9B98F}
+.guiado .paso.esc{display:none}
+.sil.nonum i{visibility:hidden}
+#contador{position:fixed;top:90px;right:18px;z-index:80;min-width:120px;text-align:center;font:900 96px/1 "Nunito",sans-serif;color:var(--noche);background:#fff;border:6px solid var(--oro);border-radius:30px;padding:8px 18px;box-shadow:var(--sombra);pointer-events:none}
+#contador small{display:block;font-size:16px;font-weight:800;color:var(--suave)}
+.fuerza{display:flex;gap:6px;align-items:flex-end;margin:6px 0}
+.fuerza span{display:flex;align-items:flex-end;justify-content:center;min-width:46px;height:40px;padding:4px 8px;border-radius:10px;background:#E8EFEA;font:700 19px "Lora",serif;color:var(--suave)}
+.fuerza span.f{height:68px;background:var(--rojo);color:#fff;font-size:24px}
+.perfiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin:8px 0}
+.perfiles button{border:2px solid var(--linea);background:#fff;border-radius:14px;padding:8px;cursor:pointer;text-align:left;min-height:56px;font-size:15px}
+.perfiles button b{display:block;font-size:16px}
+.opc{display:grid;gap:6px;margin:8px 0}.opc .interr{font-size:17px}
+.segm{display:inline-flex;border:2px solid var(--linea);border-radius:12px;overflow:hidden}.segm button{border:0;background:#fff;padding:8px 14px;cursor:pointer;font-weight:800;min-height:44px}.segm button[aria-pressed=true]{background:var(--verde);color:#fff}
+.cuadros{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
+.cuadros span{width:26px;height:26px;border:1.5px solid #000;border-radius:5px;display:inline-block}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.sil.ya{transform:none}}
 /* impresión */
 #ficha{display:none}
@@ -175,6 +206,9 @@ body.proyecta .envol{max-width:1500px}
  #ficha .sil{font-size:14pt;min-width:0;padding:2px 6px;border-bottom-width:3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
  #ficha .sil.ton::before{top:-7px;width:7px;height:7px;margin-left:-3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
  #ficha .chips{margin:6px 0 0;padding-top:8px}
+ .mayus #ficha .t{text-transform:uppercase}.facil #ficha .t{font-family:"Atkinson Hyperlegible",Verdana,sans-serif;letter-spacing:.04em}
+ .t2 #ficha{font-size:16pt}.t2 #ficha .t{font-size:19pt}.t3 #ficha{font-size:18pt}.t3 #ficha .t{font-size:23pt}
+ .contraste #ficha .sil{background:#fff!important;color:#000}
  #ficha .fpie{margin-top:12px;border-top:1px solid #999;padding-top:6px;font-size:10pt;color:#333}
 }
 </style>
@@ -188,7 +222,7 @@ body.proyecta .envol{max-width:1500px}
     <button type="button" data-v="banco" aria-pressed="false">📚 Versos</button>
     <button type="button" data-v="guia" aria-pressed="false">💡 Cómo se mide</button>
   </nav>
-  <div class="herr"><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
+  <div class="herr"><button type="button" data-adapta title="Adaptar a cada alumno: letra, colores, voz, modo guiado">♿ <span class="tx">Adaptar</span></button><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
 </div></header>
 
 <main>
@@ -198,6 +232,7 @@ body.proyecta .envol{max-width:1500px}
     <div class="caja">
       <h1>Cuenta las sílabas de un verso, paso a paso</h1>
       <p>Escribe o pega un verso o un poema. Verás las sílabas con colores, las sinalefas, la sílaba fuerte, la regla del final, el nombre del verso y la rima. Para la clase, la pizarra digital y el móvil.</p>
+      <p><b>Se adapta a cada alumno:</b> letra grande o fácil de leer, mayúsculas, alto contraste, un paso cada vez y conteo en voz alta. <button type="button" class="btn sec peq" data-adapta>♿ Adaptar</button></p>
       <label for="texto" class="oculto">Verso o poema</label>
       <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas</textarea>
       <div class="fila ejemplos" id="ejemplos"></div>
@@ -271,10 +306,47 @@ body.proyecta .envol{max-width:1500px}
 </div></div>
 <button id="abeja" type="button" aria-label="Pedir mejoras">🐝 Mejoras</button>
 
+<!-- ============ ADAPTAR ============ -->
+<div class="modal oculto" id="mAdapta" role="dialog" aria-modal="true" aria-labelledby="tAdapta"><div class="caja">
+  <h2 id="tAdapta" style="margin-top:0">♿ Adaptar a cada alumno</h2>
+  <p class="glos">Ideas de partida para empezar. Cada alumno es distinto: toca un perfil y luego ajusta lo que necesites. Se guarda en este aparato.</p>
+  <div class="perfiles" id="perfiles">
+    <button type="button" data-p="dislexia"><b>Dislexia</b>letra fácil y grande, voz</button>
+    <button type="button" data-p="vision"><b>Baja visión</b>muy grande y contraste</button>
+    <button type="button" data-p="auditiva"><b>Sordera o hipoacusia</b>todo visual, contador grande</button>
+    <button type="button" data-p="tea"><b>TEA</b>colores suaves, un paso cada vez</button>
+    <button type="button" data-p="tdah"><b>TDAH</b>rondas cortas, un paso cada vez</button>
+    <button type="button" data-p="inicial"><b>Lectura inicial</b>MAYÚSCULAS, pocas opciones</button>
+    <button type="button" data-p="normal"><b>Sin adaptar</b>volver a lo de siempre</button>
+  </div>
+  <h3 style="margin:10px 0 4px">Ver y leer</h3>
+  <div class="opc">
+    <div class="fila">Tamaño de letra: <span class="segm" id="aTam"><button type="button" data-t="1">A</button><button type="button" data-t="2">A+</button><button type="button" data-t="3">A++</button></span></div>
+    <label class="interr"><input type="checkbox" data-a="facil"> Letra fácil de leer y más espacio</label>
+    <label class="interr"><input type="checkbox" data-a="mayus"> TODO EN MAYÚSCULAS</label>
+    <label class="interr"><input type="checkbox" data-a="contraste"> Alto contraste (fondo negro)</label>
+    <label class="interr"><input type="checkbox" data-a="suave"> Colores suaves (menos estímulo)</label>
+  </div>
+  <h3 style="margin:10px 0 4px">Oír y seguir</h3>
+  <div class="opc">
+    <label class="interr"><input type="checkbox" data-a="guiado"> Un paso cada vez (botón «Siguiente paso»)</label>
+    <label class="interr"><input type="checkbox" data-a="voz"> Contar en voz alta al palmear (uno, dos, tres…)</label>
+    <label class="interr"><input type="checkbox" data-a="lento"> Palmadas lentas</label>
+    <label class="interr"><input type="checkbox" data-a="contador"> Número grande mientras palmea</label>
+  </div>
+  <h3 style="margin:10px 0 4px">Practicar</h3>
+  <div class="opc">
+    <div class="fila">Versos por ronda: <span class="segm" id="aRonda"><button type="button" data-r="4">4</button><button type="button" data-r="8">8</button><button type="button" data-r="12">12</button></span></div>
+    <label class="interr"><input type="checkbox" data-a="opc"> Solo 3 respuestas para elegir</label>
+    <label class="interr"><input type="checkbox" data-a="pista"> Si falla, una pista y otra oportunidad</label>
+  </div>
+  <p class="fila"><button class="btn" id="aCierra" type="button">Listo</button></p>
+</div></div>
+<div id="contador" class="oculto" aria-hidden="true"></div>
 <div id="ficha"></div>
 
-<script src="metrica.js?v=4"></script>
-<script src="banco.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="metrica.js?v=5"></script>
+<script src="banco.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

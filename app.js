@@ -55,6 +55,53 @@ function vista(v) {
 }
 document.querySelectorAll('nav.pest button').forEach(function (b) { b.addEventListener('click', function () { vista(b.dataset.v); }); });
 
+/* ===================== Adaptaciones (NEE) ===================== */
+var AJ_DEF = { tam: 1, facil: false, mayus: false, contraste: false, suave: false, guiado: false, voz: false, lento: false, contador: false, ronda: 8, opc: false, pista: true };
+var AJ = {};
+try { AJ = JSON.parse(ls('mv-ajustes') || '{}') || {}; } catch (e) { AJ = {}; }
+Object.keys(AJ_DEF).forEach(function (k) { if (AJ[k] === undefined) AJ[k] = AJ_DEF[k]; });
+var PERFILES = {
+  normal: {},
+  dislexia: { tam: 2, facil: true, voz: true, lento: true, pista: true },
+  vision: { tam: 3, facil: true, contraste: true, contador: true, voz: true },
+  auditiva: { contador: true, lento: true, guiado: true },
+  tea: { suave: true, guiado: true, lento: true, ronda: 4, opc: true, pista: true },
+  tdah: { guiado: true, ronda: 4, contador: true, pista: true },
+  inicial: { tam: 2, mayus: true, facil: true, voz: true, lento: true, contador: true, ronda: 4, opc: true, pista: true }
+};
+function aplicaAjustes() {
+  var b = document.body;
+  b.classList.toggle('t2', AJ.tam === 2); b.classList.toggle('t3', AJ.tam === 3);
+  ['facil', 'mayus', 'contraste', 'suave', 'guiado'].forEach(function (k) { b.classList.toggle(k, !!AJ[k]); });
+  document.querySelectorAll('#mAdapta [data-a]').forEach(function (c) { c.checked = !!AJ[c.dataset.a]; });
+  document.querySelectorAll('#aTam [data-t]').forEach(function (x) { x.setAttribute('aria-pressed', +x.dataset.t === AJ.tam); });
+  document.querySelectorAll('#aRonda [data-r]').forEach(function (x) { x.setAttribute('aria-pressed', +x.dataset.r === AJ.ronda); });
+  ls('mv-ajustes', JSON.stringify(AJ));
+}
+function cambiaAjustes() { aplicaAjustes(); if (EST.items && EST.items.length && !$('v-medir').classList.contains('oculto')) pintaResultado(); }
+document.addEventListener('click', function (e) {
+  if (e.target.closest('[data-adapta]')) { $('mAdapta').classList.remove('oculto'); var f = $('mAdapta').querySelector('button'); if (f) f.focus(); cuenta('adapta_abre'); }
+});
+$('perfiles').addEventListener('click', function (e) {
+  var b = e.target.closest('[data-p]'); if (!b) return;
+  AJ = Object.assign({}, AJ_DEF, PERFILES[b.dataset.p]); cuenta('adapta_' + b.dataset.p); cambiaAjustes();
+  toast(b.dataset.p === 'normal' ? 'Vuelta a lo de siempre' : 'Perfil aplicado: ajústalo si hace falta');
+});
+$('mAdapta').addEventListener('change', function (e) { var c = e.target.closest('[data-a]'); if (!c) return; AJ[c.dataset.a] = c.checked; cuenta('adapta_' + c.dataset.a + (c.checked ? '_si' : '_no')); cambiaAjustes(); });
+$('aTam').addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b) return; AJ.tam = +b.dataset.t; cambiaAjustes(); });
+$('aRonda').addEventListener('click', function (e) { var b = e.target.closest('[data-r]'); if (!b) return; AJ.ronda = +b.dataset.r; cambiaAjustes(); });
+$('aCierra').addEventListener('click', function () { $('mAdapta').classList.add('oculto'); });
+$('mAdapta').addEventListener('click', function (e) { if (e.target === $('mAdapta')) $('mAdapta').classList.add('oculto'); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('mAdapta').classList.add('oculto'); });
+var NUMEROS = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho'];
+function diNumero(n) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(NUMEROS[n] || String(n)); u.lang = 'es-ES'; u.rate = 1.15;
+  var v = speechSynthesis.getVoices().filter(function (x) { return /^es(-|_)ES/i.test(x.lang); })[0]; if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
 /* ===================== Sonido: palmadas ===================== */
 var AC = null;
 function audio() { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; } } if (AC && AC.state === 'suspended') AC.resume(); return AC; }
@@ -73,6 +120,7 @@ function paraPalmas() {
   if (!PALMAS) return;
   PALMAS.t.forEach(clearTimeout); PALMAS.els.forEach(function (e) { e.classList.remove('ya'); });
   if (PALMAS.boton) PALMAS.boton.textContent = '👏 Palmear';
+  $('contador').classList.add('oculto');
   PALMAS = null;
 }
 function palmea(card, boton) {
@@ -81,16 +129,18 @@ function palmea(card, boton) {
   var els = [].slice.call(card.querySelectorAll('.cabv ~ .chips .sil:not(.menos)'));
   if (!els.length) return;
   cuenta('palmear');
-  var paso = $('oLento') && $('oLento').checked ? 1000 : 650, t = [];
+  var paso = AJ.lento || AJ.voz ? 1100 : 650, t = [];
   PALMAS = { card: card, els: els, t: t, boton: boton };
   boton.textContent = '⏹ Parar';
   els.forEach(function (e, i) {
     t.push(setTimeout(function () {
       els.forEach(function (x) { x.classList.remove('ya'); }); e.classList.add('ya');
       palmada(e.classList.contains('ton'));
+      if (AJ.voz) diNumero(i + 1);
+      if (AJ.contador) { var c = $('contador'); c.innerHTML = (i + 1) + '<small>' + esc(e.firstChild.textContent) + '</small>'; c.classList.remove('oculto'); }
     }, 300 + i * paso));
   });
-  t.push(setTimeout(paraPalmas, 300 + els.length * paso + 400));
+  t.push(setTimeout(paraPalmas, 300 + els.length * paso + (AJ.contador ? 1500 : 400)));
 }
 document.addEventListener('visibilitychange', function () { if (document.hidden) { paraPalmas(); if (window.speechSynthesis) speechSynthesis.cancel(); } });
 function lee(txt) {
@@ -148,7 +198,7 @@ function totalItem(it) { return it.hemis ? it.hemis[0].r.total + it.hemis[1].r.t
 function pintaResultado(aviso) {
   var items = EST.items, h = aviso || '';
   if (items.length > 1) h += resumenPoema();
-  else h += '<div class="fila" style="margin-bottom:10px"><button class="btn sec peq" type="button" data-imp="sol">🖨 Ficha con solución</button><button class="btn sec peq" type="button" data-imp="alu">🖨 Ficha para el alumno</button><label class="interr"><input type="checkbox" id="oLento"> Palmas lentas</label></div>';
+  else h += '<div class="fila" style="margin-bottom:10px"><button class="btn sec peq" type="button" data-imp="sol">🖨 Ficha con solución</button><button class="btn sec peq" type="button" data-imp="alu">🖨 Ficha para el alumno</button><button class="btn sec peq" type="button" data-adapta>♿ Adaptar</button></div>';
   items.forEach(function (it, i) { h += tarjetaVerso(it, i, items.length === 1); });
   if (items.length > 1) h += '<p class="glos">Toca «Ver paso a paso» en cualquier verso para ver cómo se mide.</p>';
   $('resultado').innerHTML = h;
@@ -172,7 +222,7 @@ function resumenPoema() {
     '<p>' + metros + '</p><p>' + arte + ' · ' + rimaTxt + '</p>' +
     '<p style="margin-top:8px">Esquema de rima:</p><div class="esq">' + esc(esq) + '</div>' +
     '<p class="glos" style="color:#BFE3CC">Mayúscula: verso de arte mayor. Minúscula: arte menor. Raya: verso suelto, sin rima.' + (aj ? ' Hay ' + aj + ' verso' + (aj > 1 ? 's' : '') + ' con licencia para que midan como el resto: lo verás en sus pasos.' : '') + '</p>' +
-    '<div class="fila" style="margin-top:8px"><button class="btn oro peq" type="button" data-imp="sol">🖨 Ficha con solución</button><button class="btn sec peq" type="button" data-imp="alu">🖨 Ficha para el alumno</button><button class="btn sec peq" type="button" id="bPracPoema">🎯 Practicar con este poema</button><label class="interr" style="color:#fff"><input type="checkbox" id="oLento"> Palmas lentas</label></div></div>';
+    '<div class="fila" style="margin-top:8px"><button class="btn oro peq" type="button" data-imp="sol">🖨 Ficha con solución</button><button class="btn sec peq" type="button" data-imp="alu">🖨 Ficha para el alumno</button><button class="btn sec peq" type="button" id="bPracPoema">🎯 Practicar con este poema</button><button class="btn sec peq" type="button" data-adapta>♿ Adaptar</button></div></div>';
 }
 
 function colaHTML(r, texto) {
@@ -182,14 +232,14 @@ function colaHTML(r, texto) {
   return esc(texto.slice(0, ini)) + '<span class="cola">' + esc(texto.slice(ini, u.fin)) + '</span>' + esc(texto.slice(u.fin));
 }
 
-function chipsHTML(r, desde) {
+function chipsHTML(r, desde, sinNum) {
   var h = '', n = desde || 0, fon = r.metricas.length, quitar = r.ajuste < 0 ? -r.ajuste : 0;
   r.metricas.forEach(function (m, i) {
     var menos = i >= fon - quitar;
-    h += '<span class="sil c' + ((n % 6) + 1) + (m.tonica ? ' ton' : '') + (menos ? ' menos' : '') + '">' + esc(m.t) + '<i>' + (menos ? '−1' : (n + 1)) + '</i></span>';
+    h += '<span class="sil c' + ((n % 6) + 1) + (m.tonica ? ' ton' : '') + (menos ? ' menos' : '') + (sinNum ? ' nonum' : '') + '" role="img" aria-label="' + esc((menos ? 'no cuenta: ' : 'sílaba ' + (n + 1) + ': ') + m.t.replace(/‿/g, ' ') + (m.tonica ? ', fuerte' : '')) + '">' + esc(m.t) + '<i>' + (menos ? '−1' : (n + 1)) + '</i></span>';
     if (!menos) n++;
   });
-  if (r.ajuste > 0) { h += '<span class="sil ext" title="Última palabra aguda: se suma una">+1<i>' + (n + 1) + '</i></span>'; n++; }
+  if (r.ajuste > 0) { h += '<span class="sil ext' + (sinNum ? ' nonum' : '') + '" role="img" aria-label="más una, porque acaba en aguda" title="Última palabra aguda: se suma una">+1<i>' + (n + 1) + '</i></span>'; n++; }
   return { h: h, n: n };
 }
 
@@ -207,7 +257,9 @@ function tarjetaVerso(it, i, abierto) {
     h += '<div class="chips">' + a.h + '<span class="une" style="align-self:center;font-size:26px" title="cesura">‖</span>' + b.h + '</div>';
   } else h += '<div class="chips">' + chipsHTML(r, 0).h + '</div>';
   h += '<div class="acciones"><button class="btn peq" type="button" data-acc="palmas">👏 Palmear</button><button class="btn sec peq" type="button" data-acc="leer">🔊 Leer</button><button class="btn sec peq" type="button" data-acc="mal" title="Avísanos si crees que no mide bien">🐝 ¿No mide bien?</button></div>';
-  h += '<details class="pasos"' + (abierto ? ' open' : '') + '><summary>Ver paso a paso</summary>' + pasosHTML(it, i) + '</details></article>';
+  var ph = pasosHTML(it, i);
+  if (AJ.guiado) { var k = 0; ph = ph.replace(/<div class="paso"/g, function () { return k++ ? '<div class="paso esc"' : '<div class="paso"'; }) + '<p><button class="btn peq" type="button" data-sigpaso>Siguiente paso ▶</button></p>'; }
+  h += '<details class="pasos"' + (abierto || AJ.guiado ? ' open' : '') + '><summary>Ver paso a paso</summary>' + ph + '</details></article>';
   return h;
 }
 
@@ -224,6 +276,9 @@ function pasosHTML(it, i) {
   return pasosSimple(it.r, i, -1);
 }
 
+function fuerzaHTML(u) {
+  return '<div class="fuerza" aria-hidden="true">' + u.sil.map(function (s, k) { return '<span class="' + (k === u.ton ? 'f' : '') + '">' + esc(s.t) + '</span>'; }).join('') + '</div>';
+}
 function pasosSimple(r, i, hk) {
   var d = 'data-v="' + i + '" data-h="' + hk + '"';
   // 1. sílabas de cada palabra
@@ -266,7 +321,7 @@ function pasosSimple(r, i, hk) {
     sobresdrújula: 'es <b>sobresdrújula</b>: la fuerza cae antes de la antepenúltima (' + esc(silU) + '). Se restan 2.'
   }[r.tipoFinal];
   var signo = r.ajuste > 0 ? '+ 1' : r.ajuste < 0 ? '− ' + (-r.ajuste) : '+ 0';
-  h += '<div class="paso" data-n="4"><h3>Mira la última palabra</h3><p>«' + esc(u.txt) + '» ' + expl + '</p>' +
+  h += '<div class="paso" data-n="4"><h3>Mira la última palabra</h3>' + fuerzaHTML(u) + '<p>«' + esc(u.txt) + '» ' + expl + '</p>' +
     '<div class="formula"><span>' + r.fonologicas + '</span>' + signo.split(' ')[0] + '<span>' + signo.split(' ')[1] + '</span>=<span class="igual">' + r.total + '</span></div></div>';
   if (hk < 0) h += '<div class="paso" data-n="✓"><h3>' + r.total + ' sílabas métricas: ' + esc(M.nombre(r.total)) + '</h3><p>' + (r.total <= 8 ? 'Arte menor: 8 sílabas o menos.' : 'Arte mayor: más de 8 sílabas.') + ' La rima empieza en la vocal fuerte de la última palabra: «-' + esc(r.rima.cola) + '».</p></div>';
   return h;
@@ -298,6 +353,13 @@ $('resultado').addEventListener('click', function (e) {
   if (acc.dataset.acc === 'mal') abreAbeja('El verso «' + it2.texto + '» me sale ' + totalItem(it2) + ' sílabas y creo que son: ');
 });
 
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-sigpaso]'); if (!b) return;
+  var d = b.closest('details'), sig = d.querySelector('.paso.esc');
+  if (sig) { sig.classList.remove('esc'); sig.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); cuentaUnaVez('paso_guiado'); }
+  if (!d.querySelector('.paso.esc')) b.remove();
+});
+
 /* ===================== Ficha imprimible ===================== */
 function ficha(modo, items, titulo) {
   if (!items || !items.length) return;
@@ -312,7 +374,7 @@ function ficha(modo, items, titulo) {
       h += '<div class="chips">' + ch + '</div><p style="margin:6px 0 0"><b>' + tot + ' sílabas</b> · ' + esc(M.nombre(tot)) + ' · arte ' + (tot <= 8 ? 'menor' : 'mayor') + ' · última palabra ' + esc(r.tipoFinal) +
         (it.marca && EST.items.length > 1 && items === EST.items ? ' · rima ' + esc(it.marca) : '') + (it.r.ajustado ? ' · con licencia' : '') + '</p>';
     } else {
-      h += '<div class="lin"></div><p style="margin:4px 0">Sílabas métricas: <span class="cuad"></span> Última palabra: <span class="chk"></span>aguda <span class="chk"></span>llana <span class="chk"></span>esdrújula ' +
+      h += '<div class="lin"></div><p style="margin:4px 0 0">Colorea un cuadro por cada sílaba:</p><div class="cuadros">' + new Array(17).join('<span></span>') + '</div><p style="margin:4px 0">Sílabas métricas: <span class="cuad"></span> Última palabra: <span class="chk"></span>aguda <span class="chk"></span>llana <span class="chk"></span>esdrújula ' +
         (items.length > 1 ? '&nbsp; Rima: <span class="cuad"></span>' : '') + '</p>';
     }
     h += '</div>';
@@ -341,11 +403,11 @@ $('niveles').addEventListener('click', function (e) {
 $('pEmpieza').addEventListener('click', function () {
   var pool = window.PRACTICA.filter(function (x) { return P.nivel === 4 ? true : x.n === P.nivel; });
   if (P.nivel === 4) pool = baraja(pool.filter(function (x) { return x.n === 4; })).slice(0, 3).concat(baraja(pool.filter(function (x) { return x.n !== 4 && x.n !== 1; })).slice(0, 5));
-  empiezaPractica(baraja(pool).slice(0, 8), 'nivel' + P.nivel);
+  empiezaPractica(baraja(pool).slice(0, AJ.ronda), 'nivel' + P.nivel);
 });
 function empiezaPractica(lista, origen) {
   vista('practicar'); audio();
-  P.lista = lista.slice(0, 12).map(function (x) {
+  P.lista = lista.slice(0, AJ.ronda).map(function (x) {
     var r = M.analiza(x.v, x.obj ? { objetivo: x.obj } : {});
     return { v: x.v, obj: x.obj, r: r };
   }).filter(function (x) { return x.r; });
@@ -357,7 +419,7 @@ function empiezaPractica(lista, origen) {
 function itemDe(x) { var it = { texto: x.v, r: x.r, marca: '', cambios: null }; if (x.r.compuesto) { var c = x.r.compuesto; it.hemis = [{ texto: c.izq, r: c.hemis[0] }, { texto: c.der, r: c.hemis[1] }]; } return it; }
 function ejercicio() {
   var x = P.lista[P.i], it = itemDe(x), r = x.r, fin = it.hemis ? it.hemis[1].r : r;
-  P.taps = 0; P.fase = (x.obj ? 'lic' : ($('pTipo').checked ? 'tipo' : 'num'));
+  P.taps = 0; P.intento = 0; P.fase = (x.obj ? 'lic' : ($('pTipo').checked ? 'tipo' : 'num'));
   var h = '<div class="marcador"><span>Verso ' + (P.i + 1) + ' de ' + P.lista.length + '</span><span class="abejas">' + (P.bien ? new Array(P.bien + 1).join('🐝') : '') + '</span></div>' +
     '<div class="versoG">' + esc(x.v) + '</div><div id="pPreg"></div><div id="pRes"></div>';
   $('pJuego').innerHTML = h;
@@ -373,8 +435,11 @@ function pregunta(x, it, fin) {
     h = '<p><b>¿Cómo es la última palabra, «' + esc(fin.ultima) + '»?</b></p><div class="tipos">' +
       ['aguda', 'llana', 'esdrújula'].map(function (t) { return '<button type="button" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>';
   } else {
-    h = '<p><b>¿Cuántas sílabas métricas tiene?</b></p><div class="numeros">';
-    for (var n = 3; n <= 16; n++) h += '<button type="button" data-n="' + n + '">' + n + '</button>';
+    h = '<p><b>¿Cuántas sílabas métricas tiene?</b></p><div class="numeros"' + (AJ.opc ? ' style="grid-template-columns:repeat(3,1fr);max-width:420px"' : '') + '>';
+    var tot = totalItem(it), nums = [];
+    if (AJ.opc) { var otros = baraja([tot - 2, tot - 1, tot + 1, tot + 2].filter(function (n) { return n >= 2; })).slice(0, 2); nums = baraja([tot].concat(otros)); }
+    else for (var n = 3; n <= 16; n++) nums.push(n);
+    nums.forEach(function (n) { h += '<button type="button" data-n="' + n + '"' + (AJ.opc ? ' style="min-height:80px;font-size:36px"' : '') + '>' + n + '</button>'; });
     h += '</div><p class="glos">O palmea: toca la mano una vez por sílaba.</p><button class="palmea" type="button" id="pTap" aria-label="Palmada">👏</button>' +
       '<p><b id="pTaps">0</b> palmadas · <button class="btn sec peq" type="button" id="pTapOk">Comprobar mis palmadas</button> <button class="btn sec peq" type="button" id="pTap0">Borrar</button></p>';
   }
@@ -393,7 +458,7 @@ $('pJuego').addEventListener('click', function (e) {
   if (bt && P.fase === 'tipo') {
     var real = fin.tipoFinal === 'sobresdrújula' ? 'esdrújula' : fin.tipoFinal, ok = bt.dataset.t === real;
     var u = fin.palabras[fin.palabras.length - 1], silU = u.sil.map(function (s, k) { return k === u.ton ? s.t.toUpperCase() : s.t; }).join('-');
-    $('pRes').innerHTML = '<p class="' + (ok ? 'bien' : 'mal') + '">' + (ok ? '¡Bien! ' : 'Casi. ') + '«' + esc(u.txt) + '» es ' + esc(fin.tipoFinal) + ': ' + esc(silU) + '</p>';
+    $('pRes').innerHTML = '<p class="' + (ok ? 'bien' : 'mal') + '">' + (ok ? '¡Bien! ' : 'Casi. ') + '«' + esc(u.txt) + '» es ' + esc(fin.tipoFinal) + ': ' + esc(silU) + '</p><div style="display:flex;justify-content:center">' + fuerzaHTML(u) + '</div>';
     cuenta(ok ? 'practica_tipo_bien' : 'practica_tipo_mal');
     P.fase = 'num'; pregunta(x, it, fin); return;
   }
@@ -407,9 +472,23 @@ $('pJuego').addEventListener('click', function (e) {
   var bn = e.target.closest('[data-n]') || (e.target.closest('#pTapOk') ? { dataset: { n: P.taps } } : null);
   if (bn && P.fase === 'num') {
     var dicho = +bn.dataset.n, tot = totalItem(it);
+    if (dicho !== tot && AJ.pista && !P.intento) { P.intento = 1; pista(x, it, dicho); return; }
     corrige(dicho === tot, x, it, dicho === tot ? '' : 'Has dicho ' + dicho + '.');
   }
 });
+function pista(x, it, dicho) {
+  cuenta('practica_pista');
+  var r = it.hemis ? it.hemis[1].r : it.r, ideas = [];
+  var sinal = (it.hemis ? it.hemis[0].r.juntas.concat(it.hemis[1].r.juntas) : r.juntas).filter(function (j) { return j.activa; }).length;
+  if (sinal) ideas.push('Hay ' + sinal + ' sinalefa' + (sinal > 1 ? 's' : '') + ': vocales de dos palabras que se juntan en una sílaba (‿).');
+  if (r.tipoFinal === 'aguda') ideas.push('La última palabra es aguda: suma 1 al final.');
+  if (r.tipoFinal === 'esdrújula' || r.tipoFinal === 'sobresdrújula') ideas.push('La última palabra es esdrújula: resta 1 al final.');
+  if (it.hemis) ideas.push('Es un verso largo: cuenta cada mitad por separado.');
+  if (!ideas.length) ideas.push('Da una palmada por cada golpe de voz, despacio.');
+  var ch = it.hemis ? chipsHTML(it.hemis[0].r, 0, true).h + ' ‖ ' + chipsHTML(it.hemis[1].r, chipsHTML(it.hemis[0].r, 0).n, true).h : chipsHTML(it.r, 0, true).h;
+  $('pRes').innerHTML += '<div class="aviso" style="text-align:left"><b>Casi. Prueba otra vez.</b> ' + esc(ideas.join(' ')) + '<div class="chips" style="justify-content:center">' + ch + '</div><span class="glos">Cuenta los cuadros de colores.</span></div>';
+  P.taps = 0; if ($('pTaps')) $('pTaps').textContent = 0;
+}
 function corrige(ok, x, it, extra) {
   var tot = totalItem(it);
   if (ok) P.bien++;
@@ -481,7 +560,7 @@ var GUIA = [
 ];
 $('guia').innerHTML = GUIA.map(function (g, i) {
   return '<div class="caja"><h2>' + esc(g[0]) + '</h2><p>' + esc(g[1]) + '</p><div class="ej">' + esc(g[2]) + '</div><button class="btn sec peq" type="button" data-g="' + i + '">Probarlo</button></div>';
-}).join('') + bloquePuente('guia', '¿Lo explicas de otra forma en tu aula? Compártelo en ColmenIA');
+}).join('') + '<div class="caja"><h2>8. Para alumnado con necesidades educativas especiales</h2><p>Con el botón ♿ Adaptar cada alumno trabaja a su manera: letra grande o fácil de leer, MAYÚSCULAS, alto contraste, colores suaves, un paso cada vez, conteo en voz alta, número grande al palmear, rondas cortas, solo 3 respuestas y una pista antes de corregir. Hay perfiles de partida (dislexia, baja visión, sordera, TEA, TDAH, lectura inicial) que luego se ajustan. La ficha impresa respeta la letra elegida y trae cuadros para colorear una sílaba cada vez.</p><p>Idea para el aula: primero palmear el verso todos juntos, luego contar los cuadros de colores y, al final, decirlo sin ayuda.</p><button class="btn sec peq" type="button" data-adapta>♿ Abrir adaptaciones</button></div>' + bloquePuente('guia', '¿Lo explicas de otra forma en tu aula? Compártelo en ColmenIA');
 puentes($('guia'));
 $('guia').addEventListener('click', function (e) {
   var b = e.target.closest('[data-g]'); if (!b) return;
@@ -535,6 +614,7 @@ $('mejEnvia').addEventListener('click', function () {
 });
 
 /* ===================== Arranque ===================== */
+aplicaAjustes();
 puentes();
 var inicio = Q.get('v');
 if (inicio && $('v-' + inicio)) vista(inicio);
