@@ -42,10 +42,10 @@ var COMO_VISITA = Q.get('como') === 'visitante';   // para ver la app como algui
 var dentro = !COMO_VISITA && (!!ls('mv-llave') || NO_CONTAR);
 if (!dentro && !COMO_VISITA && Q.get('k') && claveBuena(Q.get('k'))) { ls('mv-llave', '1'); dentro = true; cuenta('desbloquea'); cuenta('desbloquea_enlace'); }
 var DEMO = 'Volverán las oscuras golondrinas\nen tu balcón sus nidos a colgar,\ny otra vez con el ala a sus cristales\njugando llamarán.';
-var MOTIVOS = { poema: 'Medir poemas enteros, con su rima y su estrofa', ficha: 'Las fichas para imprimir', practica: 'La práctica: el alumno cuenta y la app corrige', banco: 'Los 30 poemas listos para medir y practicar', adaptar: 'Las adaptaciones para alumnado con NEE', pizarra: 'El modo pizarra digital', portada: 'Todo Mide versos', tutorial: 'La práctica con la app' };
+var MOTIVOS = { poema: 'Poemas enteros', ficha: 'Fichas para imprimir', practica: 'Practicar', banco: 'Los 30 poemas', adaptar: 'Adaptaciones NEE', pizarra: 'Pizarra digital', portada: 'Poemas, práctica y fichas', tutorial: 'Practicar' };
 function candado(motivo) {
   if (dentro) return false;
-  $('candTit').textContent = (MOTIVOS[motivo] || 'Esto') + ': con la clave de ColmenIA';
+  $('candTit').textContent = MOTIVOS[motivo] || '';
   $('claveMsg').textContent = ''; $('mCandado').classList.remove('oculto'); setTimeout(function () { $('clave').focus(); }, 50);
   cuenta('candado_' + motivo);
   return true;
@@ -222,7 +222,8 @@ function medir(sinContar) {
   pintaResultado(aviso);
   if (!sinContar) { cuenta('medir'); if (EST.items.length > 1) cuenta('medir_poema'); }
 }
-$('bMedir').addEventListener('click', function () { audio(); medir(); });
+$('bMedir').addEventListener('click', function () { audio(); medir(); setTimeout(function () { $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60); });
+$('bBorra').addEventListener('click', function () { $('texto').value = ''; $('texto').focus(); $('resultado').innerHTML = ''; });
 $('texto').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); medir(); } });
 $('oSin').addEventListener('change', function () { cuenta('sinalefa_' + ($('oSin').checked ? 'si' : 'no')); medir(true); });
 $('oObj').addEventListener('change', function () { cuenta('objetivo'); medir(true); });
@@ -232,9 +233,9 @@ function totalItem(it) { return it.hemis ? it.hemis[0].r.total + it.hemis[1].r.t
 function pintaResultado(aviso) {
   var items = EST.items, h = aviso || '';
   var esDemo = $('texto').value.replace(/\s+/g, ' ').trim() === DEMO.replace(/\s+/g, ' ');
-  if (!dentro && items.length > 1 && esDemo) h += '<div class="aviso">📜 <b>Ejemplo de poema entero:</b> así se miden los poemas con su rima dentro de ColmenIA. Aquí puedes medir los versos que quieras, uno a uno. Para pegar tus propios poemas, entra en ColmenIA: la clave está en el post de Mide versos. <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button></div>';
+  if (!dentro && items.length > 1 && esDemo) h += '<div class="aviso">📜 <b>Ejemplo.</b> Tus poemas enteros: con la clave 🔑 <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button></div>';
   if (!dentro && items.length > 1 && !esDemo) {
-    h += '<div class="aviso">📜 Has pegado un poema de ' + items.length + ' versos y aquí tienes medido el primero. Abierto puedes medir los versos de uno en uno. <b>El poema entero, con su rima y su estrofa,</b> está en ColmenIA: entra, busca el post de Mide versos y escribe su clave. <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button> <a class="btn sec peq" data-sk="poema" target="_blank" rel="noopener">Entrar en ColmenIA</a></div>';
+    h += '<div class="aviso">📜 Aquí va el primer verso. <b>El poema entero: con la clave</b> 🔑 <button class="btn oro peq" type="button" data-candado="poema">Tengo la clave</button></div>';
     EST.items = items = items.slice(0, 1); cuenta('candado_poema_ve');
   }
   if (items.length > 1) h += resumenPoema();

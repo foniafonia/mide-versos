@@ -162,6 +162,31 @@ body.proyecta .envol{max-width:1500px}
  #pJuego{padding-bottom:70px}
 }
 
+/* ===== sencillo con pictos ===== */
+nav.pest button{display:inline-flex;align-items:center;gap:6px}
+nav.pest button img{width:30px;height:30px;border-radius:8px;background:#fff;padding:1px}
+.escribe{display:flex;align-items:center;gap:10px;font-weight:900;font-size:22px;margin-bottom:8px;color:var(--noche)}
+.escribe img{width:64px;height:64px}
+.btn.grande{font-size:22px;min-height:60px;padding:12px 28px}
+details.mas{margin-top:10px}details.mas summary{cursor:pointer;font-weight:800;color:var(--suave);min-height:40px;display:flex;align-items:center}
+.hero.sencillo{grid-template-columns:1.6fr 1fr}
+.puente.corto img{width:56px;height:56px;border-radius:12px;background:#fff;padding:2px}
+.llavebox{display:flex;gap:10px;align-items:center;background:#FFF8EA;color:var(--tinta);border-radius:14px;padding:10px;flex-wrap:wrap}
+.llavebox span{display:block;font-size:15px;color:var(--suave)}.llavebox div{flex:1;min-width:120px}
+.cargr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:640px;margin:0 auto 14px}
+.cpic{background:#fff;border:0;border-radius:22px;padding:12px 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 6px 0 rgba(0,0,0,.18);color:var(--noche)}
+.cpic img{width:100%;max-width:130px;aspect-ratio:1}.cpic b{font-size:20px;line-height:1.1}
+.cpic.oro{background:var(--oro)}.cpic:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.carmas{background:rgba(255,255,255,.12);border-radius:20px;padding:12px;max-width:640px;margin:0 auto}
+.carmas p{margin:0 0 8px;font-size:18px}.carnota{font-size:15px!important;color:#DDF1E4;margin:8px 0 0!important}
+.minis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.minis span{background:#fff;color:var(--noche);border-radius:14px;padding:6px 2px;font-weight:800;font-size:15px;display:flex;flex-direction:column;align-items:center}
+.minis img{width:56px;height:56px}
+.carmas .btn img{width:34px;height:34px;border-radius:8px;background:#fff}
+.pasosc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 12px}
+.pasosc div{background:var(--crema);border-radius:14px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px}
+.pasosc img{width:72px;height:72px}
+@media (max-width:760px){.hero.sencillo{grid-template-columns:1fr}.cpic b{font-size:17px}.minis img{width:44px;height:44px}.pasosc img{width:56px;height:56px}nav.pest button img{width:26px;height:26px}}
 /* ===== carátula ===== */
 #caratula{position:fixed;inset:0;z-index:90;background:linear-gradient(160deg,#0E3524 0%,#1E5B3C 55%,#2FA866 100%);overflow:auto;padding:18px 16px}
 .car{max-width:900px;margin:0 auto;color:#fff;text-align:center}
@@ -286,32 +311,30 @@ body.contraste{background:#000;color:#fff}
 <div id="caratula" class="oculto" role="dialog" aria-modal="true" aria-labelledby="carTit"><div class="car">
   <div class="carlogos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
   <h1 id="carTit">Mide versos</h1>
-  <p class="carsub">Aprende a medir versos con sílabas de colores, palmadas y paso a paso. Hecha para el aula, la pizarra digital y el móvil.</p>
+  <p class="carsub">Cuenta las sílabas con palmadas 👏</p>
   <div class="cardemo" aria-hidden="true"><span class="sil c1">Ver<i>1</i></span><span class="sil c2">de<i>2</i></span><span class="sil c3">que<i>3</i></span><span class="sil c4">te<i>4</i></span><span class="sil c5">quie<i>5</i></span><span class="sil c6">ro<i>6</i></span><span class="sil c1">ver<i>7</i></span><span class="sil c2">de<i>8</i></span><b>= 8</b></div>
-  <div class="fila carbot"><button class="btn" type="button" data-car="aprende">🎓 Empezar con el tutorial</button><button class="btn sec" type="button" data-car="medir">✏️ Medir un verso</button></div>
-  <p class="carsub" style="font-size:16px;margin:4px auto 10px">Esto es lo que puedes hacer ya, y lo que tienes dentro de ColmenIA:</p>
-  <div class="cardos">
-    <div class="carcol"><h2>🔓 Para probar ya</h2><ul>
-      <li>🎓 Tutorial animado para el alumnado: qué es una sílaba, la sinalefa, la sílaba fuerte…</li>
-      <li>✏️ Medir los versos que quieras, uno a uno, paso a paso.</li>
-      <li>💡 La guía para explicarlo en clase.</li></ul></div>
-    <div class="carcol miel"><h2>🐝 Todo, con ColmenIA</h2><ul>
-      <li>📜 Poemas enteros con su rima y su estrofa.</li>
-      <li>🎯 Práctica: el alumno cuenta y la app corrige.</li>
-      <li>🖨 Fichas para imprimir y modo pizarra.</li>
-      <li>♿ Adaptaciones para alumnado con NEE.</li></ul>
-      <p class="carpasos"><b>Cómo conseguir la clave:</b> 1) entra en ColmenIA, la comunidad de docentes, maestras de PT y AL, logopedas y otros profesionales de la educación · 2) busca el post «Mide versos» · 3) escribe aquí la clave.</p>
-      <div class="fila"><a class="btn oro" data-sk="caratula" target="_blank" rel="noopener">Entrar en ColmenIA</a><button class="btn sec" type="button" data-car="clave">🔑 Ya tengo la clave</button></div></div>
+  <div class="cargr">
+    <button type="button" class="cpic" data-car="aprende"><img src="img/pictos/aprender.webp" alt=""><b>Aprender</b></button>
+    <button type="button" class="cpic" data-car="medir"><img src="img/pictos/da_palmadas.webp" alt=""><b>Medir</b></button>
+    <button type="button" class="cpic oro" data-car="clave"><img src="img/pictos/llave.webp" alt=""><b>Tengo la clave</b></button>
+  </div>
+  <div class="carmas">
+    <p><b>🐝 Con la clave de ColmenIA:</b></p>
+    <div class="minis"><span><img src="img/pictos/leer.webp" alt="">Poemas</span><span><img src="img/pictos/jugar.webp" alt="">Practicar</span><span><img src="img/pictos/papel.webp" alt="">Fichas</span><span><img src="img/pictos/pizarra.webp" alt="">Pizarra</span></div>
+    <a class="btn oro" data-sk="caratula" target="_blank" rel="noopener"><img src="img/pictos/puerta.webp" alt=""> Entrar en ColmenIA</a>
+    <p class="carnota">La clave está en el post «Mide versos».</p>
+  </div>
+</div></div>
   </div>
 </div></div>
 <header class="cab"><div class="envol">
   <a class="marca" href="./" aria-label="Mide versos, inicio"><img src="img/colmenia-logo.webp" alt=""><span><b>Mide versos</b><small>Métrica paso a paso · ColmenIA</small></span></a>
   <nav class="pest" aria-label="Secciones">
-    <button type="button" data-v="medir" aria-pressed="true">✏️ Medir</button>
-    <button type="button" data-v="aprende" aria-pressed="false">🎓 Aprende</button>
-    <button type="button" data-v="practicar" aria-pressed="false">🎯 Practicar</button>
-    <button type="button" data-v="banco" aria-pressed="false">📚 Versos</button>
-    <button type="button" data-v="guia" aria-pressed="false">💡 Cómo se mide</button>
+    <button type="button" data-v="medir" aria-pressed="true"><img src="img/pictos/da_palmadas.webp" alt="">Medir</button>
+    <button type="button" data-v="aprende" aria-pressed="false"><img src="img/pictos/aprender.webp" alt="">Aprender</button>
+    <button type="button" data-v="practicar" aria-pressed="false"><img src="img/pictos/jugar.webp" alt="">Practicar</button>
+    <button type="button" data-v="banco" aria-pressed="false"><img src="img/pictos/leer.webp" alt="">Poemas</button>
+    <button type="button" data-v="guia" aria-pressed="false"><img src="img/pictos/maestra.webp" alt="">Guía</button>
   </nav>
   <div class="herr"><button type="button" data-adapta title="Adaptar a cada alumno: letra, colores, voz, modo guiado">♿ <span class="tx">Adaptar</span></button><button type="button" id="bProy" title="Pantalla grande para la pizarra digital">⛶ <span class="tx">Pizarra</span></button></div>
 </div></header>
@@ -319,32 +342,28 @@ body.contraste{background:#000;color:#fff}
 <main>
 <!-- ============ MEDIR ============ -->
 <section id="v-medir" class="envol">
-  <div class="hero">
+  <div class="hero sencillo">
     <div class="caja">
-      <h1>Cuenta las sílabas de un verso, paso a paso</h1>
-      <p>Escribe o pega un verso o un poema. Verás las sílabas con colores, las sinalefas, la sílaba fuerte, la regla del final, el nombre del verso y la rima. Para la clase, la pizarra digital y el móvil.</p>
-      <p class="solo-libre aviso" style="margin:8px 0">🔓 <b>Para probar:</b> mide los versos que quieras, uno a uno, y haz el tutorial. 🐝 <b>Con ColmenIA:</b> poemas enteros con su rima, práctica, fichas, adaptaciones y pizarra. La clave está en el post de Mide versos, dentro de la comunidad. <button type="button" class="btn oro peq" data-candado="portada">Tengo la clave</button></p>
-      <p><button type="button" class="btn sec peq" data-ir="aprende">🎓 Aprende a medir: tutorial para el alumnado</button></p>
-      <p><b>Se adapta a cada alumno:</b> letra grande o fácil de leer, mayúsculas, alto contraste, un paso cada vez y conteo en voz alta. <button type="button" class="btn sec peq" data-adapta>♿ Adaptar</button></p>
-      <label for="texto" class="oculto">Verso o poema</label>
-      <textarea id="texto" placeholder="Escribe aquí un verso o pega un poema (un verso por línea)…">Volverán las oscuras golondrinas
+      <label for="texto" class="escribe"><img src="img/pictos/escribir.webp" alt=""><span>Escribe un verso</span></label>
+      <textarea id="texto" placeholder="Escribe aquí un verso…">Volverán las oscuras golondrinas
 en tu balcón sus nidos a colgar,
 y otra vez con el ala a sus cristales
 jugando llamarán.</textarea>
+      <div class="fila" style="margin-top:10px"><button class="btn grande" id="bMedir" type="button">👏 Medir</button><button class="btn sec peq" type="button" id="bBorra">Borrar</button></div>
       <div class="fila ejemplos" id="ejemplos"></div>
-      <div class="fila ajustes">
-        <button class="btn" id="bMedir" type="button">📏 Medir</button>
-        <label class="interr"><input type="checkbox" id="oSin" checked> Sinalefa</label>
-        <label class="interr"><input type="checkbox" id="oSon" checked> Sonido</label>
-        <label class="interr">Metro: <select id="oObj" aria-label="Metro esperado"><option value="">automático</option></select></label>
-      </div>
+      <details class="mas"><summary>⚙️ Más opciones</summary>
+        <div class="fila ajustes">
+          <label class="interr"><input type="checkbox" id="oSin" checked> Sinalefa</label>
+          <label class="interr"><input type="checkbox" id="oSon" checked> Sonido</label>
+          <label class="interr">Metro: <select id="oObj" aria-label="Metro esperado"><option value="">automático</option></select></label>
+          <button type="button" class="btn sec peq" data-adapta>♿ Adaptar</button>
+        </div>
+      </details>
     </div>
-    <aside class="puente">
-      <div class="logos"><img src="img/colmenia-logo.webp" alt="ColmenIA"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"></div>
-      <b>La pidieron maestras de PT en ColmenIA</b>
-      <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA. Cada uno cuenta qué le falta en su aula y se hace. Así nació Mide versos.</p>
-      <p>¿Necesitas otra ficha, otro nivel o versos de tu temario? Pídelo allí y la mejoramos entre todos.</p>
-      <a class="btn oro" data-sk="portada" target="_blank" rel="noopener">Entrar en ColmenIA y pedir lo que te falta</a>
+    <aside class="puente corto">
+      <div class="solo-libre llavebox"><img src="img/pictos/llave.webp" alt=""><div><b>¿Tienes la clave?</b><span>Abre poemas, práctica y fichas.</span></div><button type="button" class="btn oro peq" data-candado="portada">Escribirla</button></div>
+      <div class="fila" style="gap:8px;align-items:center"><img src="img/pictos/puerta.webp" alt=""><div><b>Hecha en ColmenIA</b><span style="display:block;color:#DDF1E4;font-size:15px">La comunidad de docentes, PT, AL y logopedas.</span></div></div>
+      <a class="btn oro" data-sk="portada" target="_blank" rel="noopener">Entrar en ColmenIA</a>
     </aside>
   </div>
   <div id="resultado" aria-live="polite"></div>
@@ -389,6 +408,7 @@ jugando llamarán.</textarea>
 
 <footer class="envol pie">
   <div class="logos"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia"><img src="img/colmenia-logo.webp" alt="ColmenIA"></div>
+  <p>Pictogramas propios de Gabinete Fönia, hechos con IA.</p>
   <p><b>Mide versos</b> · Hecho en ColmenIA · Gabinete Fönia (Melilla). Herramienta de apoyo para el aula, hecha con IA y revisada con una batería de versos conocidos. En casos dudosos (hiatos, licencias) manda el oído y el criterio de la docente.</p>
   <p>Contamos visitas y botones pulsados, sin datos personales. Lo que escribes se queda en este aparato. <a data-sk="pie" target="_blank" rel="noopener">Entrar en ColmenIA</a></p>
 </footer>
@@ -406,17 +426,18 @@ jugando llamarán.</textarea>
 <button id="abeja" type="button" aria-label="Pedir mejoras">🐝 Mejoras</button>
 
 <!-- ============ CANDADO: lo de clase, para quien está en ColmenIA ============ -->
-<div class="modal oculto" id="mCandado" role="dialog" aria-modal="true" aria-labelledby="tCandado"><div class="caja">
-  <div class="fila" style="gap:8px"><img src="img/colmenia-logo.webp" alt="ColmenIA" style="height:44px;border-radius:8px"><img src="img/logo-fonia.jpg" alt="Gabinete Fönia" style="height:44px;border-radius:8px"></div>
-  <h2 id="tCandado" style="margin:10px 0 6px">🔑 <span id="candTit">Esto está en ColmenIA</span></h2>
-  <p>ColmenIA es la comunidad de Gabinete Fönia donde docentes, maestras de PT y AL, logopedas y otros profesionales de la educación piensan herramientas con IA. Dentro, en el post de Mide versos, tienes la clave para abrirlo todo, y puedes pedir la siguiente herramienta que necesites.</p>
-  <p><a class="btn oro" data-sk="candado" target="_blank" rel="noopener">Entrar en ColmenIA</a></p>
-  <div style="border-top:1px solid var(--linea);padding-top:10px">
-    <label for="clave"><b>¿Ya estás dentro?</b> Escribe la clave del post:</label>
-    <div class="fila" style="margin-top:6px"><input id="clave" autocomplete="off" autocapitalize="characters" style="flex:1;min-width:140px;border:2px solid var(--linea);border-radius:12px;padding:12px;font-size:18px" placeholder="Clave de la colmena"><button class="btn" id="bClave" type="button">Abrir</button></div>
-    <p id="claveMsg" role="status" style="min-height:1.4em"></p>
+<div class="modal oculto" id="mCandado" role="dialog" aria-modal="true" aria-labelledby="tCandado"><div class="caja" style="text-align:center">
+  <h2 id="tCandado" style="margin:0 0 4px">🔑 Con la clave</h2>
+  <p id="candTit" style="margin:0 0 10px;font-weight:800;color:var(--suave)"></p>
+  <div class="pasosc">
+    <div><img src="img/pictos/puerta.webp" alt=""><b>1. Entra en ColmenIA</b></div>
+    <div><img src="img/pictos/leer.webp" alt=""><b>2. Busca «Mide versos»</b></div>
+    <div><img src="img/pictos/llave.webp" alt=""><b>3. Escribe la clave</b></div>
   </div>
-  <p><button class="btn sec" id="candCierra" type="button">Seguir con lo abierto</button></p>
+  <p><a class="btn oro" data-sk="candado" target="_blank" rel="noopener">Entrar en ColmenIA</a></p>
+  <div class="fila" style="justify-content:center"><input id="clave" autocomplete="off" autocapitalize="characters" style="flex:1;min-width:140px;max-width:260px;border:2px solid var(--linea);border-radius:12px;padding:12px;font-size:20px;text-align:center" placeholder="Clave" aria-label="Clave"><button class="btn" id="bClave" type="button">Abrir</button></div>
+  <p id="claveMsg" role="status" style="min-height:1.4em"></p>
+  <p><button class="btn sec peq" id="candCierra" type="button">Volver</button></p>
 </div></div>
 
 <!-- ============ ADAPTAR ============ -->
@@ -458,9 +479,9 @@ jugando llamarán.</textarea>
 <div id="contador" class="oculto" aria-hidden="true"></div>
 <div id="ficha"></div>
 
-<script src="metrica.js?v=15"></script>
-<script src="banco.js?v=15"></script>
-<script src="app.js?v=15"></script>
-<script src="tutorial.js?v=15"></script>
+<script src="metrica.js?v=16"></script>
+<script src="banco.js?v=16"></script>
+<script src="app.js?v=16"></script>
+<script src="tutorial.js?v=16"></script>
 </body>
 </html>

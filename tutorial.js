@@ -38,7 +38,7 @@ function palmea(esc_, chips, desde, paso, alAcabar) {
 
 /* ===================== Lecciones ===================== */
 var L = [
-  { t: '¿Qué es una sílaba?', x: 'Una sílaba es un golpe de voz. Da una palmada por cada golpe y sabrás cuántas sílabas tiene una palabra.',
+  { t: '¿Qué es una sílaba?', x: 'Una sílaba es un golpe de voz. Una palmada por cada golpe.',
     anima: function (e) {
       var w = 'mariposa', s = sil(w);
       e.innerHTML = '<div class="tpal">' + w + '</div><div class="tw">' + s.map(function (x, i) { return chip(x, i); }).join('') + '</div><div class="fila" style="justify-content:center"><span class="tmano">👏</span><span class="tcont"></span></div><div class="tcap"></div>';
@@ -53,7 +53,7 @@ var L = [
       r.onclick = function (ev) { var b = ev.target.closest('[data-o]'); if (!b) return; ok(+b.dataset.o === n, w + ': ' + sil(w).join('-') + ' → ' + n + (n === 1 ? ' sílaba' : ' sílabas')); };
     } },
 
-  { t: 'Vocales que van juntas', x: 'Dos vocales seguidas pueden ir en la misma sílaba: se abrazan (cie-lo). O pueden separarse (po-e-ta). La a, la e y la o son fuertes: dos fuertes se separan. La i o la u con tilde también se separan (rí-o).',
+  { t: 'Vocales que van juntas', x: 'Dos vocales juntas: a veces van en la misma sílaba (cie-lo) y a veces se separan (po-e-ta).',
     anima: function (e) {
       function letras(w) { return w.split('').map(function (c) { return '<span' + (/[aeiouáéíóú]/.test(c) ? ' class="voc"' : '') + '>' + c + '</span>'; }).join(''); }
       e.innerHTML = '<div class="tpal" id="tA">' + letras('cielo') + '</div><div class="tcap" id="cA"></div><div class="tpal" id="tB">' + letras('poeta') + '</div><div class="tcap" id="cB"></div>';
@@ -69,7 +69,7 @@ var L = [
       r.onclick = function (ev) { var b = ev.target.closest('[data-o]'); if (!b) return; ok(+b.dataset.o === n, w + ': ' + s.join('-') + ' → ' + n + ' sílabas'); };
     } },
 
-  { t: 'La sinalefa: palabras que se dan la mano', x: 'Si una palabra acaba en vocal y la siguiente empieza por vocal (o por h), esas dos vocales se juntan en una sola sílaba. Se marca con este arco: ‿',
+  { t: 'La sinalefa: palabras que se dan la mano', x: 'Si una palabra acaba en vocal y la siguiente empieza por vocal, se juntan en una sílaba: ‿',
     anima: function (e) {
       e.innerHTML = '<div class="tw" id="sw">' + chip('E', 0) + chip('ra', 1) + '<span style="width:18px"></span>' + chip('un', 2) + '<span style="width:18px"></span>' + chip('ni', 3) + chip('ño', 4) + '</div><div class="tcont"></div><div class="tcap"></div>';
       var cs = [].slice.call(e.querySelectorAll('.tch')), cap = e.querySelector('.tcap'), cont = e.querySelector('.tcont');
@@ -100,7 +100,7 @@ var L = [
       };
     } },
 
-  { t: 'La sílaba fuerte', x: 'En cada palabra hay una sílaba que suena más fuerte: la tónica. Para encontrarla, di la palabra como si llamaras a alguien desde lejos: ¡ca-MIÓN!',
+  { t: 'La sílaba fuerte', x: 'Cada palabra tiene una sílaba más fuerte. Dila como si llamaras a alguien: ¡ca-MIÓN!',
     anima: function (e) {
       var W = [['canción', 'aguda: fuerza en la última'], ['verde', 'llana: fuerza en la penúltima'], ['pájaro', 'esdrújula: fuerza en la antepenúltima']];
       e.innerHTML = W.map(function (w, k) {
@@ -120,7 +120,7 @@ var L = [
       r.onclick = function (ev) { var b = ev.target.closest('[data-o]'); if (!b) return; ok(b.dataset.o === tipo, w + ' → ' + dib + ': es ' + tipo + '.'); };
     } },
 
-  { t: 'La regla de la última palabra', x: 'Al medir un verso, mira su última palabra. Si es aguda, suma 1. Si es llana, se queda igual. Si es esdrújula, resta 1.',
+  { t: 'La regla de la última palabra', x: 'Mira la última palabra. Aguda: suma 1. Llana: igual. Esdrújula: resta 1.',
     anima: function (e) {
       function fila(v, id) { var r = M.mide(v); return '<div class="tw" id="' + id + '">' + r.metricas.map(function (m, i) { return chip(m.t, i, m.tonica ? 'ton' : ''); }).join('') + '</div>'; }
       e.innerHTML = '<div class="tcap">un caballo de cartón</div>' + fila('un caballo de cartón', 'f1') + '<div class="tcont" id="n1"></div><div class="tcap">La niña come plátanos</div>' + fila('La niña come plátanos', 'f2') + '<div class="tcont" id="n2"></div>';
@@ -139,7 +139,7 @@ var L = [
       r.onclick = function (ev) { var b = ev.target.closest('[data-o]'); if (!b) return; ok(+b.dataset.o === m.total, '«' + m.ultima + '» es ' + m.tipoFinal + ': ' + m.fonologicas + (m.ajuste > 0 ? ' + 1' : m.ajuste < 0 ? ' − ' + (-m.ajuste) : ' + 0') + ' = ' + m.total + '.'); };
     } },
 
-  { t: '¡Todo junto! Mide un verso', x: 'Ahora los cuatro pasos seguidos: separa en sílabas, junta las sinalefas, cuenta con palmadas y mira la última palabra.',
+  { t: '¡Todo junto! Mide un verso', x: 'Los cuatro pasos: separa, junta, cuenta con palmadas y mira el final.',
     anima: function (e) {
       var v = 'Era un niño que soñaba', r = M.mide(v);
       var sueltas = []; r.palabras.forEach(function (p) { p.sil.forEach(function (s) { sueltas.push(s.t); }); });
@@ -167,7 +167,7 @@ var L = [
       };
     } },
 
-  { t: '¿Cómo se llama el verso?', x: 'Cada verso se llama según sus sílabas. Hasta 8 sílabas son de arte menor. Desde 9, de arte mayor.',
+  { t: '¿Cómo se llama el verso?', x: 'Cada verso se llama por sus sílabas. Hasta 8: arte menor. Desde 9: arte mayor.',
     anima: function (e) {
       var h = '<div class="tescala">';
       for (var n = 2; n <= 14; n++) { if (n === 9) h += '<hr>'; h += '<div class="' + (n >= 9 ? 'mayor' : '') + '"><span style="width:26px;text-align:right">' + n + '</span><i data-n="' + n + '"></i><span class="nm" style="opacity:0;transition:opacity .4s">' + M.nombre(n) + '</span></div>'; }
